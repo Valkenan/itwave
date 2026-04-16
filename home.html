@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Animated Login</title>
+<title>Animated Login & Sign Up</title>
 
 <style>
 :root {
@@ -40,30 +40,13 @@ body {
     overflow: hidden;
 }
 
-body::before,
-body::after {
-    content: "";
-    position: fixed;
-    width: 38vmax;
-    height: 38vmax;
-    border-radius: 50%;
-    filter: blur(22px);
-    z-index: 0;
+body::before, body::after {
+    content: ""; position: fixed; width: 38vmax; height: 38vmax;
+    border-radius: 50%; filter: blur(22px); z-index: 0;
     animation: floatOrb 9s ease-in-out infinite;
 }
-
-body::before {
-    top: -14vmax;
-    left: -10vmax;
-    background: rgba(242, 186, 90, 0.22);
-}
-
-body::after {
-    bottom: -18vmax;
-    right: -12vmax;
-    background: rgba(255, 255, 255, 0.14);
-    animation-delay: 1.6s;
-}
+body::before { top: -14vmax; left: -10vmax; background: rgba(242, 186, 90, 0.22); }
+body::after { bottom: -18vmax; right: -12vmax; background: rgba(255, 255, 255, 0.14); animation-delay: 1.6s; }
 
 @keyframes floatOrb {
     0%, 100% { transform: translateY(0) scale(1); }
@@ -71,15 +54,10 @@ body::after {
 }
 
 .card {
-    position: relative;
-    z-index: 1;
-    width: min(100%, 420px);
-    border-radius: 20px;
-    border: 1px solid var(--card-border);
-    background: var(--card);
-    backdrop-filter: blur(14px);
-    padding: 28px;
-    box-shadow: 0 24px 45px rgba(0, 0, 0, 0.2);
+    position: relative; z-index: 1; width: min(100%, 420px);
+    border-radius: 20px; border: 1px solid var(--card-border);
+    background: var(--card); backdrop-filter: blur(14px);
+    padding: 28px; box-shadow: 0 24px 45px rgba(0, 0, 0, 0.2);
     animation: riseIn 500ms ease-out;
 }
 
@@ -88,152 +66,68 @@ body::after {
     to { opacity: 1; transform: translateY(0); }
 }
 
-.title {
-    text-align: center;
-    margin-bottom: 8px;
-    font-size: clamp(1.7rem, 2vw, 2rem);
-    letter-spacing: 0.2px;
-}
+.title { text-align: center; margin-bottom: 8px; font-size: clamp(1.7rem, 2vw, 2rem); }
+.subtitle { text-align: center; color: var(--muted); margin-bottom: 22px; font-size: 0.95rem; }
 
-.subtitle {
-    text-align: center;
-    color: var(--muted);
-    margin-bottom: 22px;
-    font-size: 0.95rem;
-}
+.field { margin-bottom: 14px; }
+.field label { display: block; margin-bottom: 6px; font-size: 0.9rem; font-weight: 600; }
+.input-wrap { position: relative; }
 
-.field {
-    margin-bottom: 14px;
+input[type="email"], input[type="password"], input[type="text"] {
+    width: 100%; border: 1px solid #c7d3de; background: rgba(255, 255, 255, 0.85);
+    border-radius: 12px; padding: 12px; font-size: 0.96rem;
+    transition: all 0.2s;
 }
+input[type="password"] { padding-right: 88px; }
 
-.field label {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-
-.input-wrap {
-    position: relative;
-}
-
-input[type="email"],
-input[type="password"],
-input[type="text"] {
-    width: 100%;
-    border: 1px solid #c7d3de;
-    background: rgba(255, 255, 255, 0.85);
-    border-radius: 12px;
-    padding: 12px 88px 12px 12px;
-    font-size: 0.96rem;
-    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-}
-
-input:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.18);
-    background: #ffffff;
-}
+input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.18); background: #ffffff; }
 
 .eye {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    min-width: 64px;
-    height: 34px;
-    padding: 0 10px;
-    border-radius: 10px;
-    border: 1px solid #c7d3de;
-    background: #ffffff;
-    color: var(--muted);
-    font-size: 0.82rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    min-width: 64px; height: 34px; padding: 0 10px; border-radius: 10px;
+    border: 1px solid #c7d3de; background: #ffffff; color: var(--muted);
+    font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
 }
+.eye:hover { border-color: var(--accent); color: var(--accent); background: rgba(15, 118, 110, 0.08); }
 
-.eye:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: rgba(15, 118, 110, 0.08);
+.agree { display: flex; align-items: center; gap: 10px; font-size: 0.92rem; color: var(--muted); margin: 6px 0 16px; }
+.agree input { width: 16px; height: 16px; accent-color: var(--accent); }
+
+.main-btn {
+    width: 100%; border: none; border-radius: 12px; padding: 12px;
+    font-size: 1rem; font-weight: 700; letter-spacing: 0.3px; color: #fff;
+    background: linear-gradient(135deg, var(--accent), #0ea5a0); cursor: pointer;
+    transition: all 0.2s; margin-bottom: 15px;
 }
+.main-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(15, 118, 110, 0.32); }
 
-.eye:focus-visible {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.18);
+.message { margin: 0 0 10px; text-align: center; font-size: 0.93rem; min-height: 22px; }
+.error { color: var(--danger); }
+.success { color: var(--success); }
+
+.toggle-link {
+    display: block; text-align: center; font-size: 0.9rem;
+    color: var(--accent); font-weight: bold; text-decoration: none; cursor: pointer;
 }
+.toggle-link:hover { text-decoration: underline; }
 
-.agree {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.92rem;
-    color: var(--muted);
-    margin: 6px 0 16px;
-}
+.helper-text { font-size: 0.75rem; color: var(--muted); margin-top: 4px; display: block; }
 
-.agree input {
-    width: 16px;
-    height: 16px;
-    accent-color: var(--accent);
-}
-
-.login-btn {
-    width: 100%;
-    border: none;
-    border-radius: 12px;
-    padding: 12px;
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-    color: #fff;
-    background: linear-gradient(135deg, var(--accent), #0ea5a0);
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-}
-
-.login-btn:hover {
-    background: linear-gradient(135deg, var(--accent-hover), var(--accent));
-    transform: translateY(-1px);
-    box-shadow: 0 10px 22px rgba(15, 118, 110, 0.32);
-}
-
-.message {
-    margin: 0 0 10px;
-    text-align: center;
-    font-size: 0.93rem;
-    min-height: 22px;
-}
-
-.error {
-    color: var(--danger);
-}
-
-.success {
-    color: var(--success);
-}
-
-@media (max-width: 480px) {
-    .card {
-        padding: 22px 18px;
-        border-radius: 16px;
-    }
-
-    .subtitle {
-        margin-bottom: 18px;
-    }
-}
 </style>
 </head>
 
 <body>
 
 <div class="card">
-    <h1 class="title">Welcome Back</h1>
-    <p class="subtitle">Sign in to continue to your workspace.</p>
+    <h1 class="title" id="formTitle">Welcome Back</h1>
+    <p class="subtitle" id="formSubtitle">Sign in to continue to your workspace.</p>
+
+    <div class="field" id="usernameField" style="display: none;">
+        <label for="username">Username</label>
+        <div class="input-wrap">
+            <input type="text" id="username" placeholder="e.g., johndoe" autocomplete="off">
+        </div>
+    </div>
 
     <div class="field">
         <label for="email">Email</label>
@@ -243,116 +137,159 @@ input:focus {
     </div>
 
     <div class="field">
-        <label for="code">Code</label>
+        <label for="code">Password</label>
         <div class="input-wrap">
-            <input type="password" id="code" placeholder="Enter your code" autocomplete="current-password">
-            <button id="toggleCodeBtn" class="eye" type="button" onclick="togglePassword()" aria-label="Show code" aria-pressed="false" title="Show code">Show</button>
+            <input type="password" id="code" placeholder="Enter your password" autocomplete="current-password">
+            <button class="eye" type="button" onclick="togglePassword('code', this)">Show</button>
+        </div>
+        <span class="helper-text">Must be 8+ chars with Uppercase, Lowercase, Number & Symbol.</span>
+    </div>
+
+    <div class="field" id="confirmPasswordField" style="display: none;">
+        <label for="confirmCode">Confirm Password</label>
+        <div class="input-wrap">
+            <input type="password" id="confirmCode" placeholder="Confirm your password">
+            <button class="eye" type="button" onclick="togglePassword('confirmCode', this)">Show</button>
         </div>
     </div>
 
     <label class="agree" for="check">
         <input type="checkbox" id="check" name="check">
-        <span>I accept the conditions</span>
+        <span>I accept the Terms and Conditions</span>
     </label>
 
     <div id="msg" class="message error"></div>
 
-    <button class="login-btn" type="button" onclick="login()">Login</button>
+    <button class="main-btn" type="button" id="mainBtn" onclick="handleAuth()">Login</button>
+    
+    <a class="toggle-link" id="toggleLink" onclick="toggleMode()">Don't have an account? Sign up</a>
 </div>
 
 <script>
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
-const LOGIN_STORAGE_KEY = "itwaveLoginRecords";
+const DB_KEY = "itwaveAppUsers";
+let isLoginMode = true;
 
-function togglePassword() {
-    let input = document.getElementById("code");
-    let button = document.getElementById("toggleCodeBtn");
+// 1. Initialize Mock Database
+async function initDB() {
+    if (!localStorage.getItem(DB_KEY)) {
+        try {
+            const response = await fetch('./login-data.json');
+            const data = await response.json();
+            localStorage.setItem(DB_KEY, JSON.stringify(data.loginRecords));
+        } catch (error) {
+            console.error("Could not load initial JSON data. Starting with empty DB.");
+            localStorage.setItem(DB_KEY, JSON.stringify([]));
+        }
+    }
+}
+initDB();
+
+// 2. UI Toggles
+function togglePassword(inputId, btn) {
+    let input = document.getElementById(inputId);
     let isHidden = input.type === "password";
-
     input.type = isHidden ? "text" : "password";
-    button.textContent = isHidden ? "Hide" : "Show";
-    button.setAttribute("aria-label", isHidden ? "Hide code" : "Show code");
-    button.setAttribute("title", isHidden ? "Hide code" : "Show code");
-    button.setAttribute("aria-pressed", isHidden ? "true" : "false");
+    btn.textContent = isHidden ? "Hide" : "Show";
 }
 
-function validateLoginInput(email, code, isChecked) {
-    if (!email || !code) {
-        throw new Error("Fill all fields!");
-    }
+function toggleMode() {
+    isLoginMode = !isLoginMode;
+    document.getElementById("msg").innerHTML = ""; // Clear messages
+    
+    const title = document.getElementById("formTitle");
+    const subtitle = document.getElementById("formSubtitle");
+    const btn = document.getElementById("mainBtn");
+    const link = document.getElementById("toggleLink");
+    
+    const userField = document.getElementById("usernameField");
+    const confirmField = document.getElementById("confirmPasswordField");
 
-    if (!EMAIL_REGEX.test(email)) {
-        throw new Error("Invalid email format!");
-    }
-
-    if (!PASSWORD_REGEX.test(code)) {
-        throw new Error("Password must be 8+ chars with upper, lower, number and symbol.");
-    }
-
-    if (!isChecked) {
-        throw new Error("Accept conditions!");
+    if (isLoginMode) {
+        title.innerText = "Welcome Back";
+        subtitle.innerText = "Sign in to continue to your workspace.";
+        btn.innerText = "Login";
+        link.innerText = "Don't have an account? Sign up";
+        userField.style.display = "none";
+        confirmField.style.display = "none";
+    } else {
+        title.innerText = "Create Account";
+        subtitle.innerText = "Sign up to start managing your budget.";
+        btn.innerText = "Sign Up";
+        link.innerText = "Already have an account? Login";
+        userField.style.display = "block";
+        confirmField.style.display = "block";
     }
 }
 
-function saveLoginRecord(email) {
-    const existing = localStorage.getItem(LOGIN_STORAGE_KEY);
-    const records = existing ? JSON.parse(existing) : [];
-
-    records.push({
-        email,
-        loginAt: new Date().toISOString()
-    });
-
-    localStorage.setItem(LOGIN_STORAGE_KEY, JSON.stringify(records));
-}
-
-async function login() {
+// 3. Authentication Logic
+function handleAuth() {
     let email = document.getElementById("email").value.trim();
-    let code = document.getElementById("code").value;
+    let password = document.getElementById("code").value;
     let check = document.getElementById("check").checked;
     let msg = document.getElementById("msg");
 
     try {
-        // 1. Validate Input Formats
-        validateLoginInput(email, code, check);
-        
-        // 2. Fetch Authentication Data
-        const response = await fetch('./login-data.json');
-        if (!response.ok) throw new Error("Could not connect to authentication server.");
-        const data = await response.json();
-        
-        // 3. Verify User Credentials (check both email and password)
-        const user = data.loginRecords.find(u => u.email === email && u.password === code);
-        
-        if (!user) {
-            throw new Error("Invalid email or password!");
+        if (!email || !password) throw new Error("Please fill in all required fields!");
+        if (!EMAIL_REGEX.test(email)) throw new Error("Invalid email format!");
+        if (!check) throw new Error("You must accept the conditions!");
+
+        let usersDB = JSON.parse(localStorage.getItem(DB_KEY) || "[]");
+
+        if (isLoginMode) {
+            // --- LOGIN LOGIC ---
+            const user = usersDB.find(u => u.email === email && u.password === password);
+            if (!user) throw new Error("Invalid email or password!");
+            if (user.status !== "active") throw new Error("This account is inactive.");
+            
+            completeLogin(user, msg);
+            
+        } else {
+            // --- SIGN UP LOGIC ---
+            let username = document.getElementById("username").value.trim();
+            let confirmPass = document.getElementById("confirmCode").value;
+            
+            if (!username) throw new Error("Username is required!");
+            if (!PASSWORD_REGEX.test(password)) throw new Error("Password does not meet security requirements.");
+            if (password !== confirmPass) throw new Error("Passwords do not match!");
+            
+            // Check if user already exists
+            if (usersDB.some(u => u.email === email)) throw new Error("Email is already registered!");
+            
+            // Create New User (Default role: user)
+            const newUser = {
+                username: username,
+                email: email,
+                password: password,
+                role: "user",
+                status: "active",
+                accountCreatedAt: new Date().toISOString()
+            };
+            
+            usersDB.push(newUser);
+            localStorage.setItem(DB_KEY, JSON.stringify(usersDB)); // Save to DB
+            
+            completeLogin(newUser, msg, "Account created successfully! Redirecting...");
         }
-
-        if (user.status !== "active") {
-            throw new Error("This account is inactive.");
-        }
-
-        // 4. Create Session with Full User Data
-        localStorage.setItem("currentUser", JSON.stringify(user));
-        saveLoginRecord(email);
-
-        msg.className = "message success";
-        msg.innerHTML = "Login success...";
-
-        setTimeout(() => {
-            window.location.href = "./mainpage.html";
-        }, 1200);
     } catch (error) {
         msg.className = "message error";
-        msg.innerHTML = error.message || "Validation error!";
+        msg.innerHTML = error.message;
     }
 }
 
+function completeLogin(user, msgElement, customMsg = "Login successful...") {
+    localStorage.setItem("currentUser", JSON.stringify(user));
+    msgElement.className = "message success";
+    msgElement.innerHTML = customMsg;
+    
+    setTimeout(() => {
+        window.location.href = "./mainpage.html";
+    }, 1200);
+}
+
 document.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        login();
-    }
+    if (event.key === "Enter") handleAuth();
 });
 </script>
 

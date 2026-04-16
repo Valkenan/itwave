@@ -59,9 +59,8 @@
         }
 
         @media (max-width: 768px) {
-            .dashboard-container {
-                grid-template-columns: 1fr;
-            }
+            .dashboard-container { grid-template-columns: 1fr; }
+            .header { flex-direction: column; gap: 15px; text-align: center; }
         }
 
         .card {
@@ -79,111 +78,46 @@
             font-size: 1.2rem;
         }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+        .form-group { margin-bottom: 15px; }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
+        label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; }
 
         input[type="number"] {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            box-sizing: border-box;
-            transition: border-color 0.2s;
+            width: 100%; padding: 12px; border: 1px solid #cbd5e1;
+            border-radius: 8px; box-sizing: border-box; transition: border-color 0.2s;
         }
 
         input[type="number"]:focus {
-            outline: none;
-            border-color: var(--primary);
+            outline: none; border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
         }
 
         .btn {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 10px;
+            width: 100%; padding: 14px; border: none; border-radius: 8px;
+            font-size: 1rem; font-weight: bold; cursor: pointer;
+            transition: all 0.2s; margin-top: 10px;
         }
 
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-primary:hover { background-color: var(--primary-hover); }
 
-        .btn-primary:hover {
-            background-color: var(--primary-hover);
-        }
+        .btn-secondary { background-color: #e2e8f0; color: var(--text-dark); }
+        .btn-secondary:hover { background-color: #cbd5e1; }
 
-        .btn-secondary {
-            background-color: #e2e8f0;
-            color: var(--text-dark);
-        }
-
-        .btn-secondary:hover {
-            background-color: #cbd5e1;
-        }
-
-        .results-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .stat-box {
-            background: var(--bg-color);
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-        }
-
+        .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .stat-box { background: var(--bg-color); padding: 15px; border-radius: 8px; text-align: center; }
         .stat-box.danger .amount { color: var(--danger); }
         .stat-box.success .amount { color: var(--success); }
+        .stat-box h3 { margin: 0 0 5px 0; font-size: 0.9rem; color: var(--text-muted); }
+        .stat-box .amount { font-size: 1.5rem; font-weight: bold; margin: 0; }
 
-        .stat-box h3 {
-            margin: 0 0 5px 0;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
+        .chart-container { position: relative; height: 250px; width: 100%; margin-top: 20px; }
 
-        .stat-box .amount {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 0;
-        }
-
-        .chart-container {
-            position: relative;
-            height: 250px;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .alert {
-            padding: 12px 15px;
-            margin-top: 15px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
+        .alert { padding: 12px 15px; margin-top: 15px; border-radius: 8px; font-size: 0.9rem; line-height: 1.5; }
         .alert-danger { background-color: #fef2f2; color: #991b1b; border-right: 4px solid var(--danger); }
         .alert-warning { background-color: #fffbeb; color: #92400e; border-right: 4px solid var(--warning); }
         .alert-success { background-color: #ecfdf5; color: #065f46; border-right: 4px solid var(--success); }
 
-        /* Print Styles for exporting report */
         @media print {
             body { background: white; }
             .btn, .header button { display: none; }
@@ -197,214 +131,187 @@
 <div class="header">
     <h1>📊 Smart Budget Dashboard</h1>
     <div>
-        <button class="btn btn-primary" style="width: auto; padding: 8px 15px; margin-left: 10px; background: #0284c7;" onclick="window.location.href='investment.html'">💎 Investment Opportunities</button>
+        <button class="btn btn-primary" style="width: auto; padding: 8px 15px; margin-right: 10px; background: #0284c7;" onclick="window.location.href='investisement.html'">💎 Investment</button>
         
         <span class="user-info" id="userDisplay">Welcome</span>
-        <button class="btn btn-secondary" style="width: auto; padding: 8px 15px; margin-left: 15px;" onclick="goToLogin()">Logout</button>
+        <button class="btn btn-secondary" style="width: auto; padding: 8px 15px; margin-left: 10px;" onclick="goToLogin()">Logout</button>
     </div>
 </div>
 
-    <div class="dashboard-container">
-        <div class="card">
-            <h2>📝 Enter Financial Data</h2>
-            
-            <div class="form-group">
-                <label for="income">Monthly Income (MAD):</label>
-                <input type="number" id="income" placeholder="Example: 5000">
-            </div>
-            
-            <div class="form-group">
-                <label for="rent">Housing and Bills (Rent, Water, Electricity):</label>
-                <input type="number" id="rent" placeholder="Example: 1500">
-            </div>
-            
-            <div class="form-group">
-                <label for="food">Food Expenses:</label>
-                <input type="number" id="food" placeholder="Example: 1500">
-            </div>
-            
-            <div class="form-group">
-                <label for="transport">Transport Expenses:</label>
-                <input type="number" id="transport" placeholder="Example: 500">
-            </div>
-
-            <button class="btn btn-primary" onclick="calculateBudget()">Calculate Budget</button>
-            <button class="btn btn-secondary" onclick="window.print()">📥 Download Report (PDF)</button>
+<div class="dashboard-container">
+    <div class="card">
+        <h2>📝 Enter Financial Data</h2>
+        
+        <div class="form-group">
+            <label for="income">Monthly Income (MAD):</label>
+            <input type="number" id="income" placeholder="Example: 5000">
+        </div>
+        
+        <div class="form-group">
+            <label for="rent">Housing and Bills (Rent, Water, Electricity):</label>
+            <input type="number" id="rent" placeholder="Example: 1500">
+        </div>
+        
+        <div class="form-group">
+            <label for="food">Food Expenses:</label>
+            <input type="number" id="food" placeholder="Example: 1500">
+        </div>
+        
+        <div class="form-group">
+            <label for="transport">Transport Expenses:</label>
+            <input type="number" id="transport" placeholder="Example: 500">
         </div>
 
-        <div class="card" id="resultsCard" style="display: none;">
-            <h2>📈 Dashboard and Results</h2>
-            
-            <div class="results-grid">
-                <div class="stat-box danger">
-                    <h3>Total Expenses</h3>
-                    <p class="amount"><span id="totalExpenses">0</span> MAD</p>
-                </div>
-                <div class="stat-box success">
-                    <h3>Remaining Amount (Savings)</h3>
-                    <p class="amount"><span id="balance">0</span> MAD</p>
-                </div>
-            </div>
-
-            <div class="chart-container">
-                <canvas id="budgetChart"></canvas>
-            </div>
-
-            <div id="suggestionsArea" style="margin-top: 20px;"></div>
-        </div>
+        <button class="btn btn-primary" onclick="calculateBudget()">Calculate Budget</button>
+        <button class="btn btn-secondary" onclick="window.print()">📥 Download Report (PDF)</button>
     </div>
 
-    <script>
-        let budgetChartInstance = null;
+    <div class="card" id="resultsCard" style="display: none;">
+        <h2>📈 Dashboard and Results</h2>
+        
+        <div class="results-grid">
+            <div class="stat-box danger">
+                <h3>Total Expenses</h3>
+                <p class="amount"><span id="totalExpenses">0</span> MAD</p>
+            </div>
+            <div class="stat-box success">
+                <h3>Remaining Amount</h3>
+                <p class="amount"><span id="balance">0</span> MAD</p>
+            </div>
+        </div>
 
-        // Initialize Page
-        window.onload = function() {
-            const currentUserData = localStorage.getItem("currentUser");
-            if (!currentUserData) {
-                window.location.href = './home.html';
-                return;
-            }
-            
-            try {
-                const user = JSON.parse(currentUserData);
-                document.getElementById('userDisplay').innerText = `Welcome, ${user.username} (${user.email})`;
-            } catch (e) {
-                // Fallback for old string format
-                document.getElementById('userDisplay').innerText = `Welcome, ${currentUserData.split('@')[0]}`;
-            }
-            
-            loadSavedData();
-        };
+        <div class="chart-container">
+            <canvas id="budgetChart"></canvas>
+        </div>
 
-        function getCurrentUserEmail() {
-            const currentUserData = localStorage.getItem("currentUser");
-            if (!currentUserData) return null;
+        <div id="suggestionsArea" style="margin-top: 20px;"></div>
+    </div>
+</div>
 
-            try {
-                const user = JSON.parse(currentUserData);
-                return user.email || null;
-            } catch (e) {
-                return currentUserData;
-            }
-        }
+<script>
+    let budgetChartInstance = null;
 
-        function calculateBudget() {
-            const income = parseFloat(document.getElementById('income').value) || 0;
-            const rent = parseFloat(document.getElementById('rent').value) || 0;
-            const food = parseFloat(document.getElementById('food').value) || 0;
-            const transport = parseFloat(document.getElementById('transport').value) || 0;
-            
-            if (income <= 0) {
-                alert("Please enter a valid monthly income!");
-                return;
-            }
-
-            const totalExpenses = rent + food + transport;
-            const balance = income - totalExpenses;
-
-            // Display Results
-            document.getElementById('totalExpenses').innerText = totalExpenses;
-            document.getElementById('balance').innerText = balance;
-            document.getElementById('resultsCard').style.display = 'block';
-
-            // Generate Chart & Suggestions
-            updateChart(rent, food, transport, balance);
-            generateSuggestions(income, totalExpenses, food, transport);
-            saveData(income, rent, food, transport);
-        }
-
-        // --- NEW: Chart.js Integration ---
-        function updateChart(rent, food, transport, balance) {
-            const ctx = document.getElementById('budgetChart').getContext('2d');
-            
-            // Destroy previous chart if it exists so it can redraw smoothly
-            if (budgetChartInstance) {
-                budgetChartInstance.destroy();
-            }
-
-            // Ensure balance doesn't break the chart if it's negative
-            const displayBalance = balance > 0 ? balance : 0;
-
-            budgetChartInstance = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Housing and Bills', 'Food', 'Transport', 'Savings (Remaining)'],
-                    datasets: [{
-                        data: [rent, food, transport, displayBalance],
-                        backgroundColor: [
-                            '#ef4444', // Red for rent
-                            '#f59e0b', // Yellow for food
-                            '#3b82f6', // Blue for transport
-                            '#10b981'  // Green for savings
-                        ],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'right' }
-                    }
-                }
-            });
-        }
-
-        function generateSuggestions(income, totalExpenses, food, transport) {
-            const suggestionsArea = document.getElementById('suggestionsArea');
-            suggestionsArea.innerHTML = '<h3 style="margin-bottom:10px;">💡 Smart Suggestions:</h3>'; 
-
-            let hasSuggestions = false;
-            
-            if (totalExpenses > income) {
-                suggestionsArea.innerHTML += `<div class="alert alert-danger">⚠️ <strong>Critical warning:</strong> Your expenses exceed your income. You are in an unstable financial situation and should reduce spending immediately.</div>`;
-                hasSuggestions = true;
-            }
-
-            if (food > (income * 0.30)) {
-                suggestionsArea.innerHTML += `<div class="alert alert-warning">🍲 <strong>Food budget:</strong> It uses more than 30% of your income. Try weekly meal planning and reduce eating out.</div>`;
-                hasSuggestions = true;
-            }
-
-            if (transport > (income * 0.10)) {
-                suggestionsArea.innerHTML += `<div class="alert alert-warning">🚌 <strong>Transport budget:</strong> It is relatively high. Consider using monthly public transport subscriptions.</div>`;
-                hasSuggestions = true;
-            }
-
-            if (!hasSuggestions && totalExpenses <= income) {
-                suggestionsArea.innerHTML += `<div class="alert alert-success">✅ <strong>Excellent:</strong> Your financial distribution is healthy. Try transferring the remaining amount directly to savings as soon as you get paid (pay yourself first rule).</div>`;
-            }
-        }
-
-        function saveData(income, rent, food, transport) {
-            const userEmail = getCurrentUserEmail();
-            if (!userEmail) return;
-
-            const userData = { income, rent, food, transport };
-            localStorage.setItem(`budgetData_${userEmail}`, JSON.stringify(userData));
-        }
-
-        function loadSavedData() {
-            const userEmail = getCurrentUserEmail();
-            if (!userEmail) return;
-
-            const savedData = localStorage.getItem(`budgetData_${userEmail}`);
-            if (savedData) {
-                const userData = JSON.parse(savedData);
-                document.getElementById('income').value = userData.income || '';
-                document.getElementById('rent').value = userData.rent || '';
-                document.getElementById('food').value = userData.food || '';
-                document.getElementById('transport').value = userData.transport || '';
-                
-                // Automatically calculate if data exists
-                if(userData.income) calculateBudget();
-            }
-        }
-
-        function goToLogin() {
-            localStorage.removeItem("currentUser");
+    window.onload = function() {
+        const currentUserData = localStorage.getItem("currentUser");
+        if (!currentUserData) {
             window.location.href = './home.html';
+            return;
         }
-    </script>
+        
+        try {
+            const user = JSON.parse(currentUserData);
+            document.getElementById('userDisplay').innerText = `Hello, ${user.username || 'User'}`;
+        } catch (e) {
+            document.getElementById('userDisplay').innerText = `Hello!`;
+        }
+        
+        loadSavedData();
+    };
+
+    function getCurrentUserEmail() {
+        const currentUserData = localStorage.getItem("currentUser");
+        if (!currentUserData) return null;
+        try {
+            const user = JSON.parse(currentUserData);
+            return user.email || null;
+        } catch (e) {
+            return currentUserData;
+        }
+    }
+
+    function calculateBudget() {
+        const income = parseFloat(document.getElementById('income').value) || 0;
+        const rent = parseFloat(document.getElementById('rent').value) || 0;
+        const food = parseFloat(document.getElementById('food').value) || 0;
+        const transport = parseFloat(document.getElementById('transport').value) || 0;
+        
+        if (income <= 0) {
+            alert("Please enter a valid monthly income!");
+            return;
+        }
+
+        const totalExpenses = rent + food + transport;
+        const balance = income - totalExpenses;
+
+        document.getElementById('totalExpenses').innerText = totalExpenses;
+        document.getElementById('balance').innerText = balance;
+        document.getElementById('resultsCard').style.display = 'block';
+
+        updateChart(rent, food, transport, balance);
+        generateSuggestions(income, totalExpenses, food, transport);
+        saveData(income, rent, food, transport);
+    }
+
+    function updateChart(rent, food, transport, balance) {
+        const ctx = document.getElementById('budgetChart').getContext('2d');
+        if (budgetChartInstance) budgetChartInstance.destroy();
+        const displayBalance = balance > 0 ? balance : 0;
+
+        budgetChartInstance = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Housing', 'Food', 'Transport', 'Savings'],
+                datasets: [{
+                    data: [rent, food, transport, displayBalance],
+                    backgroundColor: ['#ef4444', '#f59e0b', '#3b82f6', '#10b981'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'right' } }
+            }
+        });
+    }
+
+    function generateSuggestions(income, totalExpenses, food, transport) {
+        const suggestionsArea = document.getElementById('suggestionsArea');
+        suggestionsArea.innerHTML = '<h3 style="margin-bottom:10px;">💡 AI Suggestions:</h3>'; 
+        let hasSuggestions = false;
+        
+        if (totalExpenses > income) {
+            suggestionsArea.innerHTML += `<div class="alert alert-danger">⚠️ <strong>Critical warning:</strong> Your expenses exceed your income. Reduce spending immediately.</div>`;
+            hasSuggestions = true;
+        }
+        if (food > (income * 0.30)) {
+            suggestionsArea.innerHTML += `<div class="alert alert-warning">🍲 <strong>Food budget:</strong> Exceeds 30%. Try meal planning.</div>`;
+            hasSuggestions = true;
+        }
+        if (transport > (income * 0.10)) {
+            suggestionsArea.innerHTML += `<div class="alert alert-warning">🚌 <strong>Transport budget:</strong> High. Consider monthly subscriptions.</div>`;
+            hasSuggestions = true;
+        }
+        if (!hasSuggestions && totalExpenses <= income) {
+            suggestionsArea.innerHTML += `<div class="alert alert-success">✅ <strong>Excellent:</strong> Healthy budget! Invest the remaining balance.</div>`;
+        }
+    }
+
+    function saveData(income, rent, food, transport) {
+        const userEmail = getCurrentUserEmail();
+        if (!userEmail) return;
+        const userData = { income, rent, food, transport };
+        localStorage.setItem(`budgetData_${userEmail}`, JSON.stringify(userData));
+    }
+
+    function loadSavedData() {
+        const userEmail = getCurrentUserEmail();
+        if (!userEmail) return;
+        const savedData = localStorage.getItem(`budgetData_${userEmail}`);
+        if (savedData) {
+            const userData = JSON.parse(savedData);
+            document.getElementById('income').value = userData.income || '';
+            document.getElementById('rent').value = userData.rent || '';
+            document.getElementById('food').value = userData.food || '';
+            document.getElementById('transport').value = userData.transport || '';
+            if(userData.income) calculateBudget();
+        }
+    }
+
+    function goToLogin() {
+        localStorage.removeItem("currentUser");
+        window.location.href = './home.html';
+    }
+</script>
 </body>
 </html>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invest Smart | It-Force</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #0f766e;
@@ -25,61 +26,93 @@
             --border-color: #334155;
         }
 
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg-color); margin: 0; padding: 20px; color: var(--text-dark); transition: 0.3s; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg-color); margin: 0; padding: 30px; color: var(--text-dark); transition: 0.3s; }
 
-        .header { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto 20px auto; background: var(--card-bg); padding: 15px 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .header h1 { margin: 0; font-size: 1.5rem; color: var(--primary); }
-        .controls { display: flex; gap: 10px; align-items: center; }
+        .header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            width: 100%; max-width: 1600px; margin: 0 auto 30px auto; 
+            background: var(--card-bg); padding: 20px 40px; border-radius: 12px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); box-sizing: border-box;
+        }
+        .header h1 { margin: 0; font-size: 1.8rem; color: var(--primary); font-weight: bold; display: flex; align-items: center; gap: 10px;}
+        .controls { display: flex; gap: 15px; align-items: center; }
 
-        .container { max-width: 1100px; margin: auto; padding: 20px 0; }
-        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
-        .card { background: var(--card-bg); padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--primary); transition: 0.3s;}
-        .card h3 { color: var(--primary); margin-bottom: 12px; }
-        .card p { color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; }
+        .container { width: 100%; max-width: 1600px; margin: auto; padding: 20px 0; box-sizing: border-box;}
+        
+        .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; margin-bottom: 50px; }
+        @media (max-width: 1024px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
 
-        .calculator { background: var(--card-bg); padding: 35px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); max-width: 700px; margin: auto; }
-        .calculator h2 { text-align: center; margin-bottom: 25px; }
+        .card { background: var(--card-bg); padding: 35px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--primary); transition: 0.3s;}
+        .card h3 { color: var(--primary); margin-bottom: 15px; font-size: 1.3rem; display: flex; align-items: center; gap: 10px;}
+        .card p { color: var(--text-muted); line-height: 1.6; font-size: 1rem; }
 
-        .input-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 600; }
-        input, select { width: 100%; padding: 12px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-dark); border-radius: 8px; font-size: 16px; box-sizing: border-box; }
+        .calculator { background: var(--card-bg); padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); max-width: 800px; margin: auto; }
+        .calculator h2 { text-align: center; margin-bottom: 30px; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 10px;}
+
+        .input-group { margin-bottom: 25px; }
+        label { display: block; margin-bottom: 10px; font-weight: 600; font-size: 1rem;}
+        input, select { width: 100%; padding: 14px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-dark); border-radius: 8px; font-size: 1rem; box-sizing: border-box; }
         input:focus { outline: none; border-color: var(--primary); }
 
-        .btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: .3s; }
+        .btn { width: 100%; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: .3s; display: flex; align-items: center; justify-content: center; gap: 8px;}
         .btn:hover { background: var(--primary-hover); }
-        .btn-back { background: var(--border-color); color: var(--text-dark); padding: 8px 15px; text-decoration: none; border-radius: 6px; font-weight: bold;}
-        .theme-btn { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 50%; width: 35px; height: 35px; cursor: pointer; }
-
-        .result { margin-top: 25px; padding: 20px; background: var(--bg-color); border-radius: 10px; font-size: 1.1rem; font-weight: bold; text-align: center; border: 1px solid var(--border-color); }
         
-        footer { text-align: center; padding: 40px; color: var(--text-muted); font-weight: bold;}
+        .btn-back { background: var(--border-color); color: var(--text-dark); padding: 10px 20px; text-decoration: none; border-radius: 8px; font-weight: bold; display: flex; align-items: center; gap: 8px;}
+        
+        .theme-btn { 
+            background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-dark);
+            width: 44px; height: 44px; border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+            cursor: pointer; transition: 0.3s;
+        }
+        .theme-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .result { margin-top: 30px; padding: 25px; background: var(--bg-color); border-radius: 10px; font-size: 1.2rem; font-weight: bold; text-align: center; border: 1px solid var(--border-color); }
+        
+        footer { text-align: center; padding: 50px 0 20px 0; color: var(--text-muted); font-weight: bold;}
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h1 data-i18n="title">💰 Invest Smart</h1>
+    <h1><i class="fa-solid fa-coins"></i> <span data-i18n="title">Invest Smart</span></h1>
     <div class="controls">
-        <select id="langSelect" onchange="changeLang(this.value)">
+        <select id="langSelect" onchange="changeLang(this.value)" style="padding: 8px 12px; border-radius: 8px;">
             <option value="en">EN</option>
             <option value="fr">FR</option>
             <option value="ar">AR</option>
         </select>
-        <button class="theme-btn" onclick="toggleTheme()" id="themeIcon">🌙</button>
-        <a href="mainpage.html" class="btn-back" data-i18n="back">⬅️ Back</a>
+        <button class="theme-btn" onclick="toggleTheme()" id="themeIcon">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+        <a href="mainpage.html" class="btn-back">
+            <i class="fa-solid fa-arrow-left"></i> <span data-i18n="back">Back to Dashboard</span>
+        </a>
     </div>
 </div>
 
 <div class="container">
     <div class="cards">
-        <div class="card"><h3 data-i18n="c1_t">📈 Investment Funds</h3><p data-i18n="c1_d">Start with small monthly amounts and let your investments grow.</p></div>
-        <div class="card"><h3 data-i18n="c2_t">🏠 Real Estate</h3><p data-i18n="c2_d">Contribute to large projects with small amounts.</p></div>
-        <div class="card"><h3 data-i18n="c3_t">💻 Digital Projects</h3><p data-i18n="c3_d">Invest in building stores or apps for passive income.</p></div>
-        <div class="card"><h3 data-i18n="c4_t">📚 Self Development</h3><p data-i18n="c4_d">The best investment is in your skills like coding.</p></div>
+        <div class="card">
+            <h3><i class="fa-solid fa-arrow-trend-up"></i> <span data-i18n="c1_t">Investment Funds</span></h3>
+            <p data-i18n="c1_d">Start with small monthly amounts and let your investments grow.</p>
+        </div>
+        <div class="card">
+            <h3><i class="fa-solid fa-building"></i> <span data-i18n="c2_t">Real Estate</span></h3>
+            <p data-i18n="c2_d">Contribute to large projects with small amounts.</p>
+        </div>
+        <div class="card">
+            <h3><i class="fa-solid fa-laptop-code"></i> <span data-i18n="c3_t">Digital Projects</span></h3>
+            <p data-i18n="c3_d">Invest in building stores or apps for passive income.</p>
+        </div>
+        <div class="card">
+            <h3><i class="fa-solid fa-book-open"></i> <span data-i18n="c4_t">Self Development</span></h3>
+            <p data-i18n="c4_d">The best investment is in your skills like coding.</p>
+        </div>
     </div>
 
     <div class="calculator">
-        <h2 data-i18n="calc_title">📊 Financial Growth Calculator</h2>
+        <h2><i class="fa-solid fa-calculator"></i> <span data-i18n="calc_title">Financial Growth Calculator</span></h2>
         <div class="input-group">
             <label data-i18n="lbl_m">Monthly Investment (MAD)</label>
             <input type="number" id="monthly">
@@ -92,18 +125,20 @@
             <label data-i18n="lbl_r">Annual Return %</label>
             <input type="number" id="rate">
         </div>
-        <button class="btn" onclick="calcInvestment()" data-i18n="btn_calc">Calculate Value</button>
+        <button class="btn" onclick="calcInvestment()">
+            <i class="fa-solid fa-chart-line"></i> <span data-i18n="btn_calc">Calculate Value</span>
+        </button>
         <div class="result" id="result">...</div>
     </div>
 </div>
 
-<footer><span data-i18n="created_by">Created by</span> It-Force © 2026</footer>
+<footer><span data-i18n="created_by">Created by</span> It-Force &copy; 2026</footer>
 
 <script>
 const dict = {
-    en: { title: "💰 Invest Smart", back: "⬅️ Back", c1_t: "📈 Investment Funds", c1_d: "Start with small monthly amounts and let your investments grow.", c2_t: "🏠 Real Estate", c2_d: "Contribute to large projects with small amounts.", c3_t: "💻 Digital Projects", c3_d: "Invest in building stores or apps for passive income.", c4_t: "📚 Self Development", c4_d: "The best investment is in your skills like coding.", calc_title: "📊 Financial Growth Calculator", lbl_m: "Monthly Investment (MAD)", lbl_y: "Duration (Years)", lbl_r: "Annual Return %", btn_calc: "Calculate Value", res_txt: "Estimated portfolio value:", created_by: "Created by" },
-    fr: { title: "💰 Investir Malin", back: "⬅️ Retour", c1_t: "📈 Fonds d'Invest.", c1_d: "Commencez petit et laissez vos investissements croître.", c2_t: "🏠 Immobilier", c2_d: "Contribuez à de grands projets avec de petites sommes.", c3_t: "💻 Projets Digitaux", c3_d: "Investissez dans des apps pour un revenu passif.", c4_t: "📚 Auto-Développement", c4_d: "Le meilleur investissement est dans vos compétences.", calc_title: "📊 Calculateur de Croissance", lbl_m: "Investissement Mensuel (MAD)", lbl_y: "Durée (Années)", lbl_r: "Rendement Annuel %", btn_calc: "Calculer la Valeur", res_txt: "Valeur estimée du portefeuille:", created_by: "Créé par" },
-    ar: { title: "💰 استثمر بذكاء", back: "⬅️ رجوع", c1_t: "📈 صناديق الاستثمار", c1_d: "ابدأ بمبالغ صغيرة واترك استثماراتك تنمو.", c2_t: "🏠 العقار", c2_d: "ساهم في مشاريع كبرى بمبالغ بسيطة.", c3_t: "💻 مشاريع رقمية", c3_d: "استثمر في تطبيقات ومتاجر لدخل مستمر.", c4_t: "📚 تطوير الذات", c4_d: "أفضل استثمار هو في مهاراتك مثل البرمجة.", calc_title: "📊 حاسبة النمو المالي", lbl_m: "الاستثمار الشهري (درهم)", lbl_y: "المدة (بالسنوات)", lbl_r: "نسبة الربح السنوية %", btn_calc: "احسب القيمة", res_txt: "القيمة التقديرية لمحفظتك:", created_by: "تم الإنشاء بواسطة" }
+    en: { title: "Invest Smart", back: "Back to Dashboard", c1_t: "Investment Funds", c1_d: "Start with small monthly amounts and let your investments grow.", c2_t: "Real Estate", c2_d: "Contribute to large projects with small amounts.", c3_t: "Digital Projects", c3_d: "Invest in building stores or apps for passive income.", c4_t: "Self Development", c4_d: "The best investment is in your skills like coding.", calc_title: "Financial Growth Calculator", lbl_m: "Monthly Investment (MAD)", lbl_y: "Duration (Years)", lbl_r: "Annual Return %", btn_calc: "Calculate Value", res_txt: "Estimated portfolio value:", created_by: "Created by" },
+    fr: { title: "Investir Malin", back: "Retour au Tableau", c1_t: "Fonds d'Invest.", c1_d: "Commencez petit et laissez vos investissements croître.", c2_t: "Immobilier", c2_d: "Contribuez à de grands projets avec de petites sommes.", c3_t: "Projets Digitaux", c3_d: "Investissez dans des apps pour un revenu passif.", c4_t: "Auto-Développement", c4_d: "Le meilleur investissement est dans vos compétences.", calc_title: "Calculateur de Croissance", lbl_m: "Investissement Mensuel (MAD)", lbl_y: "Durée (Années)", lbl_r: "Rendement Annuel %", btn_calc: "Calculer la Valeur", res_txt: "Valeur estimée du portefeuille:", created_by: "Créé par" },
+    ar: { title: "استثمر بذكاء", back: "العودة للوحة التحكم", c1_t: "صناديق الاستثمار", c1_d: "ابدأ بمبالغ صغيرة واترك استثماراتك تنمو.", c2_t: "العقار", c2_d: "ساهم في مشاريع كبرى بمبالغ بسيطة.", c3_t: "مشاريع رقمية", c3_d: "استثمر في تطبيقات ومتاجر لدخل مستمر.", c4_t: "تطوير الذات", c4_d: "أفضل استثمار هو في مهاراتك مثل البرمجة.", calc_title: "حاسبة النمو المالي", lbl_m: "الاستثمار الشهري (درهم)", lbl_y: "المدة (بالسنوات)", lbl_r: "نسبة الربح السنوية %", btn_calc: "احسب القيمة", res_txt: "القيمة التقديرية لمحفظتك:", created_by: "تم الإنشاء بواسطة" }
 };
 
 let currentLang = localStorage.getItem('appLang') || 'en';
@@ -117,7 +152,7 @@ window.onload = function() {
 
 function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
-    document.getElementById('themeIcon').innerText = theme === 'dark' ? '☀️' : '🌙';
+    document.getElementById('themeIcon').innerHTML = theme === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
     localStorage.setItem('appTheme', theme);
     currentTheme = theme;
 }
@@ -146,7 +181,7 @@ function calcInvestment() {
     for(let i=0; i < (y * 12); i++) total = (total + m) * (1 + (r / 100 / 12));
 
     document.getElementById("result").innerHTML = 
-        `${dict[currentLang].res_txt} <br><br><span style='font-size:1.5rem; color: var(--primary);'>` + 
+        `${dict[currentLang].res_txt} <br><br><span style='font-size:1.8rem; color: var(--primary);'>` + 
         total.toLocaleString('fr-FR', {minimumFractionDigits: 2}) + " MAD</span>";
 }
 </script>

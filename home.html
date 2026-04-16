@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>It-Force | Login</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
 :root {
@@ -53,53 +54,63 @@ body::after { bottom: -18vmax; right: -12vmax; background: rgba(255, 255, 255, 0
     position: fixed; top: 20px; right: 20px; z-index: 10;
     display: flex; gap: 10px; align-items: center;
 }
-.lang-btn, .theme-btn {
+.lang-btn {
     background: var(--card); border: 1px solid var(--card-border);
-    color: var(--text); padding: 8px 12px; border-radius: 8px;
+    color: var(--text); padding: 8px 16px; border-radius: 8px;
     cursor: pointer; font-weight: bold; backdrop-filter: blur(5px);
-    transition: 0.3s;
+    transition: 0.3s; outline: none;
 }
-.lang-btn:hover, .theme-btn:hover { background: var(--accent); color: white; }
+.lang-btn:hover { background: var(--accent); color: white; }
+
+.theme-btn {
+    background: var(--card); border: 1px solid var(--card-border);
+    color: var(--text); width: 42px; height: 42px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+    cursor: pointer; backdrop-filter: blur(5px); transition: 0.3s;
+}
+.theme-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
 
 .card {
     position: relative; z-index: 1; width: min(100%, 420px);
     border-radius: 20px; border: 1px solid var(--card-border);
     background: var(--card); backdrop-filter: blur(14px);
-    padding: 28px; box-shadow: 0 24px 45px rgba(0, 0, 0, 0.2);
+    padding: 35px; box-shadow: 0 24px 45px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
 }
 
 .title { text-align: center; margin-bottom: 8px; font-size: 2rem; }
-.subtitle { text-align: center; color: var(--muted); margin-bottom: 22px; font-size: 0.95rem; }
+.subtitle { text-align: center; color: var(--muted); margin-bottom: 25px; font-size: 0.95rem; }
 
-.field { margin-bottom: 14px; }
+.field { margin-bottom: 16px; }
 .field label { display: block; margin-bottom: 6px; font-size: 0.9rem; font-weight: 600; }
 .input-wrap { position: relative; }
 
 input[type="email"], input[type="password"], input[type="text"] {
     width: 100%; border: 1px solid var(--muted); background: var(--input-bg); color: var(--text);
-    border-radius: 12px; padding: 12px; font-size: 0.96rem; transition: all 0.2s;
+    border-radius: 12px; padding: 14px; font-size: 0.96rem; transition: all 0.2s;
 }
-input[type="password"] { padding-right: 88px; }
-[dir="rtl"] input[type="password"] { padding-right: 12px; padding-left: 88px; }
+input[type="password"] { padding-right: 50px; }
+[dir="rtl"] input[type="password"] { padding-right: 14px; padding-left: 50px; }
 
 input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.18); }
 
 .eye {
     position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
-    height: 34px; padding: 0 10px; border-radius: 10px;
-    border: 1px solid var(--muted); background: var(--card); color: var(--text);
-    font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
+    width: 38px; height: 38px; border-radius: 10px;
+    border: none; background: transparent; color: var(--muted);
+    font-size: 1.1rem; cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
 }
 [dir="rtl"] .eye { right: auto; left: 8px; }
-.eye:hover { border-color: var(--accent); color: var(--accent); }
+.eye:hover { color: var(--accent); }
 
-.agree { display: flex; align-items: center; gap: 10px; font-size: 0.92rem; color: var(--muted); margin: 6px 0 16px; }
+.agree { display: flex; align-items: center; gap: 10px; font-size: 0.92rem; color: var(--muted); margin: 8px 0 20px; }
 
 .main-btn {
-    width: 100%; border: none; border-radius: 12px; padding: 12px;
+    width: 100%; border: none; border-radius: 12px; padding: 14px;
     font-size: 1rem; font-weight: 700; color: #fff;
     background: var(--accent); cursor: pointer; transition: all 0.2s; margin-bottom: 15px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
 }
 .main-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
@@ -108,8 +119,8 @@ input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px 
 .success { color: var(--success); }
 
 .toggle-link { display: block; text-align: center; font-size: 0.9rem; color: var(--accent); font-weight: bold; cursor: pointer; }
-.helper-text { font-size: 0.75rem; color: var(--muted); margin-top: 4px; display: block; }
-.creator { text-align: center; margin-top: 20px; font-size: 0.8rem; color: var(--card); position: relative; z-index: 1;}
+.helper-text { font-size: 0.75rem; color: var(--muted); margin-top: 6px; display: block; }
+.creator { text-align: center; margin-top: 25px; font-size: 0.85rem; color: var(--card); position: relative; z-index: 1;}
 </style>
 </head>
 
@@ -121,7 +132,9 @@ input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px 
         <option value="fr">Français</option>
         <option value="ar">العربية</option>
     </select>
-    <button class="theme-btn" onclick="toggleTheme()" id="themeIcon">🌙</button>
+    <button class="theme-btn" onclick="toggleTheme()" id="themeIcon">
+        <i class="fa-solid fa-moon"></i>
+    </button>
 </div>
 
 <div class="card">
@@ -142,7 +155,9 @@ input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px 
         <label for="code" data-i18n="password">Password</label>
         <div class="input-wrap">
             <input type="password" id="code" autocomplete="current-password">
-            <button class="eye" type="button" onclick="togglePassword('code', this)" data-i18n="show">Show</button>
+            <button class="eye" type="button" onclick="togglePassword('code', this)">
+                <i class="fa-solid fa-eye"></i>
+            </button>
         </div>
         <span class="helper-text" data-i18n="pass_rule">Must be 8+ chars with Uppercase, Lowercase, Number & Symbol.</span>
     </div>
@@ -151,7 +166,9 @@ input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px 
         <label for="confirmCode" data-i18n="confirm_pass">Confirm Password</label>
         <div class="input-wrap">
             <input type="password" id="confirmCode">
-            <button class="eye" type="button" onclick="togglePassword('confirmCode', this)" data-i18n="show">Show</button>
+            <button class="eye" type="button" onclick="togglePassword('confirmCode', this)">
+                <i class="fa-solid fa-eye"></i>
+            </button>
         </div>
     </div>
 
@@ -162,17 +179,20 @@ input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px 
 
     <div id="msg" class="message error"></div>
 
-    <button class="main-btn" type="button" id="mainBtn" onclick="handleAuth()" data-i18n="login">Login</button>
+    <button class="main-btn" type="button" onclick="handleAuth()">
+        <i class="fa-solid fa-right-to-bracket" id="btnIcon"></i> 
+        <span id="mainBtn" data-i18n="login">Login</span>
+    </button>
     <a class="toggle-link" id="toggleLink" onclick="toggleMode()" data-i18n="no_account">Don't have an account? Sign up</a>
 </div>
-<div class="creator" data-i18n="created_by">Created by It-Force © 2026</div>
+<div class="creator"><span data-i18n="created_by">Created by</span> It-Force &copy; 2026</div>
 
 <script>
 // --- DICTIONARY ---
 const dict = {
-    en: { welcome: "Welcome Back", signin_sub: "Sign in to continue to your workspace.", create_acc: "Create Account", signup_sub: "Sign up to start managing your budget.", username: "Username", email: "Email", password: "Password", confirm_pass: "Confirm Password", show: "Show", hide: "Hide", pass_rule: "8+ chars, Uppercase, Lowercase, Number & Symbol.", accept: "I accept the Terms and Conditions", login: "Login", signup: "Sign Up", no_account: "Don't have an account? Sign up", has_account: "Already have an account? Login", created_by: "Created by It-Force © 2026", err_fill: "Fill all fields!", err_mail: "Invalid email!", err_cond: "Accept terms!", err_cred: "Invalid email or password!", err_match: "Passwords do not match!", success: "Success! Redirecting...", ph_user: "e.g., johndoe", ph_email: "name@example.com", ph_pass: "Enter your password" },
-    fr: { welcome: "Bon retour", signin_sub: "Connectez-vous pour continuer.", create_acc: "Créer un compte", signup_sub: "Inscrivez-vous pour gérer votre budget.", username: "Nom d'utilisateur", email: "Email", password: "Mot de passe", confirm_pass: "Confirmer le mot de passe", show: "Afficher", hide: "Cacher", pass_rule: "8+ carac., Majuscule, Minuscule, Chiffre & Symbole.", accept: "J'accepte les conditions", login: "Se connecter", signup: "S'inscrire", no_account: "Pas de compte ? S'inscrire", has_account: "Déjà un compte ? Se connecter", created_by: "Créé par It-Force © 2026", err_fill: "Remplissez tout!", err_mail: "Email invalide!", err_cond: "Acceptez les conditions!", err_cred: "Email ou mot de passe invalide!", err_match: "Les mots de passe ne correspondent pas!", success: "Succès! Redirection...", ph_user: "ex: jeandupont", ph_email: "nom@exemple.com", ph_pass: "Votre mot de passe" },
-    ar: { welcome: "مرحباً بعودتك", signin_sub: "سجل الدخول للمتابعة.", create_acc: "إنشاء حساب", signup_sub: "سجل لتبدأ في إدارة ميزانيتك.", username: "اسم المستخدم", email: "البريد الإلكتروني", password: "كلمة المرور", confirm_pass: "تأكيد كلمة المرور", show: "إظهار", hide: "إخفاء", pass_rule: "8+ أحرف، حرف كبير، صغير، رقم ورمز.", accept: "أوافق على الشروط والأحكام", login: "دخول", signup: "تسجيل", no_account: "ليس لديك حساب؟ سجل الآن", has_account: "لديك حساب؟ سجل الدخول", created_by: "تم الإنشاء بواسطة It-Force © 2026", err_fill: "املأ جميع الحقول!", err_mail: "بريد غير صالح!", err_cond: "اقبل الشروط!", err_cred: "بريد أو كلمة مرور خاطئة!", err_match: "كلمات المرور غير متطابقة!", success: "نجاح! جاري التوجيه...", ph_user: "مثال: ahmad123", ph_email: "name@example.com", ph_pass: "أدخل كلمة المرور" }
+    en: { welcome: "Welcome Back", signin_sub: "Sign in to continue to your workspace.", create_acc: "Create Account", signup_sub: "Sign up to start managing your budget.", username: "Username", email: "Email", password: "Password", confirm_pass: "Confirm Password", pass_rule: "8+ chars, Uppercase, Lowercase, Number & Symbol.", accept: "I accept the Terms and Conditions", login: "Login", signup: "Sign Up", no_account: "Don't have an account? Sign up", has_account: "Already have an account? Login", created_by: "Created by", err_fill: "Fill all fields!", err_mail: "Invalid email!", err_cond: "Accept terms!", err_cred: "Invalid email or password!", err_match: "Passwords do not match!", success: "Success! Redirecting...", ph_user: "e.g., johndoe", ph_email: "name@example.com", ph_pass: "Enter your password" },
+    fr: { welcome: "Bon retour", signin_sub: "Connectez-vous pour continuer.", create_acc: "Créer un compte", signup_sub: "Inscrivez-vous pour gérer votre budget.", username: "Nom d'utilisateur", email: "Email", password: "Mot de passe", confirm_pass: "Confirmer le mot de passe", pass_rule: "8+ carac., Majuscule, Minuscule, Chiffre & Symbole.", accept: "J'accepte les conditions", login: "Se connecter", signup: "S'inscrire", no_account: "Pas de compte ? S'inscrire", has_account: "Déjà un compte ? Se connecter", created_by: "Créé par", err_fill: "Remplissez tout!", err_mail: "Email invalide!", err_cond: "Acceptez les conditions!", err_cred: "Email ou mot de passe invalide!", err_match: "Les mots de passe ne correspondent pas!", success: "Succès! Redirection...", ph_user: "ex: jeandupont", ph_email: "nom@exemple.com", ph_pass: "Votre mot de passe" },
+    ar: { welcome: "مرحباً بعودتك", signin_sub: "سجل الدخول للمتابعة.", create_acc: "إنشاء حساب", signup_sub: "سجل لتبدأ في إدارة ميزانيتك.", username: "اسم المستخدم", email: "البريد الإلكتروني", password: "كلمة المرور", confirm_pass: "تأكيد كلمة المرور", pass_rule: "8+ أحرف، حرف كبير، صغير، رقم ورمز.", accept: "أوافق على الشروط والأحكام", login: "دخول", signup: "تسجيل", no_account: "ليس لديك حساب؟ سجل الآن", has_account: "لديك حساب؟ سجل الدخول", created_by: "تم الإنشاء بواسطة", err_fill: "املأ جميع الحقول!", err_mail: "بريد غير صالح!", err_cond: "اقبل الشروط!", err_cred: "بريد أو كلمة مرور خاطئة!", err_match: "كلمات المرور غير متطابقة!", success: "نجاح! جاري التوجيه...", ph_user: "مثال: ahmad123", ph_email: "name@example.com", ph_pass: "أدخل كلمة المرور" }
 };
 
 let currentLang = localStorage.getItem('appLang') || 'en';
@@ -188,7 +208,7 @@ initDB();
 
 function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
-    document.getElementById('themeIcon').innerText = theme === 'dark' ? '☀️' : '🌙';
+    document.getElementById('themeIcon').innerHTML = theme === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
     localStorage.setItem('appTheme', theme);
     currentTheme = theme;
 }
@@ -208,7 +228,6 @@ function changeLang(lang) {
         if(dict[lang][key]) el.innerText = dict[lang][key];
     });
 
-    // Handle Placeholders
     document.getElementById('username').placeholder = dict[lang].ph_user;
     document.getElementById('email').placeholder = dict[lang].ph_email;
     document.getElementById('code').placeholder = dict[lang].ph_pass;
@@ -226,23 +245,16 @@ function changeLang(lang) {
 function encryptPassword(password) { return btoa(unescape(encodeURIComponent(password))); }
 
 async function initDB() {
-    // Check if DB exists OR if it's the old broken version. "v2" forces a fresh load to fix the bug.
-    if (!localStorage.getItem(DB_KEY) || localStorage.getItem("db_version") !== "v2") {
+    if (!localStorage.getItem(DB_KEY) || localStorage.getItem("db_version") !== "v3") {
         try {
             const response = await fetch('./login-data.json');
             const data = await response.json();
-            
-            // Fix: Encrypt the plain text passwords from JSON before saving them to localStorage
             const secureRecords = data.loginRecords.map(user => ({
-                ...user,
-                password: encryptPassword(user.password)
+                ...user, password: encryptPassword(user.password)
             }));
-            
             localStorage.setItem(DB_KEY, JSON.stringify(secureRecords));
-            localStorage.setItem("db_version", "v2"); // Mark as fixed
-        } catch (error) { 
-            localStorage.setItem(DB_KEY, JSON.stringify([])); 
-        }
+            localStorage.setItem("db_version", "v3"); 
+        } catch (error) { localStorage.setItem(DB_KEY, JSON.stringify([])); }
     }
 }
 
@@ -250,7 +262,7 @@ function togglePassword(inputId, btn) {
     let input = document.getElementById(inputId);
     let isHidden = input.type === "password";
     input.type = isHidden ? "text" : "password";
-    btn.innerText = isHidden ? dict[currentLang].hide : dict[currentLang].show;
+    btn.innerHTML = isHidden ? '<i class="fa-solid fa-eye-slash"></i>' : '<i class="fa-solid fa-eye"></i>';
 }
 
 function toggleMode() {
@@ -258,6 +270,7 @@ function toggleMode() {
     document.getElementById("msg").innerHTML = "";
     document.getElementById("usernameField").style.display = isLoginMode ? "none" : "block";
     document.getElementById("confirmPasswordField").style.display = isLoginMode ? "none" : "block";
+    document.getElementById("btnIcon").className = isLoginMode ? "fa-solid fa-right-to-bracket" : "fa-solid fa-user-plus";
     changeLang(currentLang); 
 }
 

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Budget | It-Force</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -31,69 +32,79 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color); margin: 0; padding: 20px;
+            background-color: var(--bg-color); margin: 0; padding: 30px;
             color: var(--text-dark); transition: all 0.3s;
         }
 
         .header {
             display: flex; justify-content: space-between; align-items: center;
-            max-width: 1000px; margin: 0 auto 20px auto;
-            background: var(--card-bg); padding: 15px 30px;
-            border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s;
+            width: 100%; max-width: 1600px; margin: 0 auto 30px auto;
+            background: var(--card-bg); padding: 20px 40px;
+            border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s; box-sizing: border-box;
         }
 
-        .header h1 { margin: 0; font-size: 1.5rem; color: var(--primary); }
+        .header h1 { margin: 0; font-size: 1.8rem; color: var(--primary); font-weight: bold; display: flex; align-items: center; gap: 10px;}
         .controls-group { display: flex; align-items: center; gap: 15px; }
 
-        .dashboard-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1000px; margin: 0 auto; }
-        @media (max-width: 768px) { .dashboard-container { grid-template-columns: 1fr; } .header { flex-direction: column; gap: 15px; text-align: center; } }
-
-        .card {
-            background: var(--card-bg); padding: 25px; border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); transition: all 0.3s;
+        .dashboard-container { 
+            display: grid; grid-template-columns: 1fr 2fr; gap: 30px; 
+            width: 100%; max-width: 1600px; margin: 0 auto; box-sizing: border-box;
+        }
+        
+        @media (max-width: 1024px) { 
+            .dashboard-container { grid-template-columns: 1fr; } 
+            .header { flex-direction: column; gap: 20px; text-align: center; } 
         }
 
-        .card h2 { margin-top: 0; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; font-size: 1.2rem; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; }
+        .card {
+            background: var(--card-bg); padding: 35px; border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); transition: all 0.3s;
+        }
+
+        .card h2 { margin-top: 0; border-bottom: 2px solid var(--border-color); padding-bottom: 15px; font-size: 1.4rem; font-weight: 600; display: flex; align-items: center; gap: 10px;}
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.95rem; }
 
         input[type="number"], select {
-            width: 100%; padding: 12px; border: 1px solid var(--border-color);
+            width: 100%; padding: 14px; border: 1px solid var(--border-color);
             background: var(--bg-color); color: var(--text-dark);
-            border-radius: 8px; box-sizing: border-box; transition: 0.3s;
+            border-radius: 8px; box-sizing: border-box; transition: 0.3s; font-size: 1rem;
         }
         input:focus, select:focus { outline: none; border-color: var(--primary); }
 
         .btn {
-            width: 100%; padding: 12px; border: none; border-radius: 8px;
-            font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 10px;
+            width: 100%; padding: 14px; border: none; border-radius: 8px;
+            font-size: 1.05rem; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 15px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
         }
         .btn-primary { background-color: var(--primary); color: white; }
         .btn-primary:hover { background-color: var(--primary-hover); }
         .btn-secondary { background-color: var(--border-color); color: var(--text-dark); }
 
-        .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .stat-box { background: var(--bg-color); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);}
+        .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+        .stat-box { background: var(--bg-color); padding: 20px; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);}
         .stat-box.danger .amount { color: var(--danger); }
         .stat-box.success .amount { color: var(--success); }
-        .stat-box h3 { margin: 0 0 5px 0; font-size: 0.9rem; color: var(--text-muted); }
-        .stat-box .amount { font-size: 1.5rem; font-weight: bold; margin: 0; }
+        .stat-box h3 { margin: 0 0 10px 0; font-size: 1rem; color: var(--text-muted); }
+        .stat-box .amount { font-size: 1.8rem; font-weight: bold; margin: 0; }
 
-        .chart-container { position: relative; height: 250px; width: 100%; margin-top: 20px; }
+        .chart-container { position: relative; height: 350px; width: 100%; margin-top: 20px; }
         
-        .alert { padding: 12px 15px; margin-top: 15px; border-radius: 8px; font-size: 0.9rem; line-height: 1.5; background: var(--bg-color); border: 1px solid var(--border-color); }
+        .alert { padding: 15px 20px; margin-top: 20px; border-radius: 8px; font-size: 1rem; line-height: 1.6; background: var(--bg-color); border: 1px solid var(--border-color); display: flex; gap: 10px; align-items: flex-start;}
+        .alert i { font-size: 1.2rem; margin-top: 2px;}
         
-        footer { text-align: center; margin-top: 40px; padding-bottom: 20px; color: var(--text-muted); font-weight: bold; }
+        footer { text-align: center; margin-top: 50px; padding-bottom: 20px; color: var(--text-muted); font-weight: bold; }
 
-        .theme-btn { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 50%; width: 35px; height: 35px; cursor: pointer; }
+        .theme-btn { 
+            background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-dark);
+            width: 44px; height: 44px; border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+            cursor: pointer; transition: 0.3s;
+        }
+        .theme-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
-        /* 🖨️ Fix for Printing in Dark Mode */
         @media print {
-            body, .card, .header, .stat-box, .alert { 
-                background: white !important; color: black !important; 
-                box-shadow: none !important; border: 1px solid #ccc !important; 
-            }
+            body, .card, .header, .stat-box, .alert { background: white !important; color: black !important; box-shadow: none !important; border: 1px solid #ccc !important; }
             h1, h2, h3, p, span, div { color: black !important; }
             .btn, .controls-group, .theme-btn { display: none !important; }
             .dashboard-container { display: block; }
@@ -104,22 +115,28 @@
 <body>
 
 <div class="header">
-    <h1 data-i18n="title">📊 Smart Budget</h1>
+    <h1><i class="fa-solid fa-chart-pie"></i> <span data-i18n="title">Smart Budget</span></h1>
     <div class="controls-group">
-        <select id="langSelect" onchange="changeLang(this.value)">
+        <select id="langSelect" onchange="changeLang(this.value)" style="width:auto; padding: 8px 12px; margin:0;">
             <option value="en">EN</option>
             <option value="fr">FR</option>
             <option value="ar">AR</option>
         </select>
-        <button class="theme-btn" onclick="toggleTheme()" id="themeIcon">🌙</button>
-        <button class="btn btn-primary" style="width: auto; padding: 8px 15px; margin: 0;" onclick="window.location.href='investisement.html'" data-i18n="nav_invest">💎 Investment</button>
-        <button class="btn btn-secondary" style="width: auto; padding: 8px 15px; margin: 0;" onclick="goToLogin()" data-i18n="logout">Logout</button>
+        <button class="theme-btn" onclick="toggleTheme()" id="themeIcon">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+        <button class="btn btn-primary" style="width: auto; padding: 10px 20px; margin: 0;" onclick="window.location.href='investisement.html'">
+            <i class="fa-solid fa-gem"></i> <span data-i18n="nav_invest">Investment</span>
+        </button>
+        <button class="btn btn-secondary" style="width: auto; padding: 10px 20px; margin: 0;" onclick="goToLogin()">
+            <i class="fa-solid fa-right-from-bracket"></i> <span data-i18n="logout">Logout</span>
+        </button>
     </div>
 </div>
 
 <div class="dashboard-container">
     <div class="card">
-        <h2 data-i18n="enter_data">📝 Enter Financial Data</h2>
+        <h2><i class="fa-solid fa-pen-to-square"></i> <span data-i18n="enter_data">Enter Financial Data</span></h2>
         
         <div class="form-group">
             <label for="income" data-i18n="income">Monthly Income (MAD):</label>
@@ -138,12 +155,16 @@
             <input type="number" id="transport">
         </div>
 
-        <button class="btn btn-primary" onclick="calculateBudget()" data-i18n="calc_btn">Calculate Budget</button>
-        <button class="btn btn-secondary" onclick="window.print()" data-i18n="pdf_btn">📥 Download Report</button>
+        <button class="btn btn-primary" onclick="calculateBudget()">
+            <i class="fa-solid fa-calculator"></i> <span data-i18n="calc_btn">Calculate Budget</span>
+        </button>
+        <button class="btn btn-secondary" onclick="window.print()">
+            <i class="fa-solid fa-file-pdf"></i> <span data-i18n="pdf_btn">Download Report</span>
+        </button>
     </div>
 
     <div class="card" id="resultsCard" style="display: none;">
-        <h2 data-i18n="res_title">📈 Dashboard and Results</h2>
+        <h2><i class="fa-solid fa-chart-line"></i> <span data-i18n="res_title">Dashboard and Results</span></h2>
         
         <div class="results-grid">
             <div class="stat-box danger">
@@ -160,20 +181,20 @@
             <canvas id="budgetChart"></canvas>
         </div>
 
-        <div id="suggestionsArea" style="margin-top: 20px;"></div>
+        <div id="suggestionsArea" style="margin-top: 30px;"></div>
     </div>
 </div>
 
 <footer>
-    <span data-i18n="created_by">Created by</span> It-Force © 2026
+    <span data-i18n="created_by">Created by</span> It-Force &copy; 2026
 </footer>
 
 <script>
 // --- DICTIONARY ---
 const dict = {
-    en: { title: "📊 Smart Budget", nav_invest: "💎 Investment", logout: "Logout", enter_data: "📝 Enter Financial Data", income: "Monthly Income (MAD):", rent: "Housing and Bills (MAD):", food: "Food Expenses (MAD):", transport: "Transport Expenses (MAD):", calc_btn: "Calculate Budget", pdf_btn: "📥 Download Report", res_title: "📈 Dashboard and Results", total_exp: "Total Expenses", rem_amt: "Remaining Amount", ai_load: "✨ AI is analyzing your data...", created_by: "Created by" },
-    fr: { title: "📊 Budget Intelligent", nav_invest: "💎 Investissement", logout: "Déconnexion", enter_data: "📝 Entrez vos données", income: "Revenu Mensuel (MAD):", rent: "Logement et Factures (MAD):", food: "Dépenses Alimentaires (MAD):", transport: "Dépenses de Transport (MAD):", calc_btn: "Calculer le Budget", pdf_btn: "📥 Télécharger PDF", res_title: "📈 Tableau de Bord", total_exp: "Dépenses Totales", rem_amt: "Montant Restant", ai_load: "✨ L'IA analyse vos données...", created_by: "Créé par" },
-    ar: { title: "📊 الميزانية الذكية", nav_invest: "💎 الاستثمار", logout: "خروج", enter_data: "📝 إدخال البيانات", income: "الدخل الشهري (درهم):", rent: "السكن والفواتير (درهم):", food: "مصاريف التغذية (درهم):", transport: "مصاريف التنقل (درهم):", calc_btn: "احسب الميزانية", pdf_btn: "📥 تحميل التقرير", res_title: "📈 لوحة التحكم والنتائج", total_exp: "إجمالي المصاريف", rem_amt: "المبلغ المتبقي", ai_load: "✨ الذكاء الاصطناعي يحلل بياناتك...", created_by: "تم الإنشاء بواسطة" }
+    en: { title: "Smart Budget", nav_invest: "Investment", logout: "Logout", enter_data: "Enter Financial Data", income: "Monthly Income (MAD):", rent: "Housing and Bills (MAD):", food: "Food Expenses (MAD):", transport: "Transport Expenses (MAD):", calc_btn: "Calculate Budget", pdf_btn: "Download Report", res_title: "Dashboard and Results", total_exp: "Total Expenses", rem_amt: "Remaining Amount", created_by: "Created by", t_sug: "Smart Saving Tips:", w_crit: "Critical warning: Your expenses exceed your income! Reduce spending immediately.", w_food: "Food budget: Exceeds 30% of your income. Try weekly meal planning.", w_trans: "Transport budget: High. Consider monthly public transit subscriptions.", succ: "Excellent: Healthy budget! Consider investing your remaining balance or saving it." },
+    fr: { title: "Budget Intelligent", nav_invest: "Investissement", logout: "Déconnexion", enter_data: "Entrez vos données", income: "Revenu Mensuel (MAD):", rent: "Logement et Factures (MAD):", food: "Dépenses Alimentaires (MAD):", transport: "Dépenses de Transport (MAD):", calc_btn: "Calculer le Budget", pdf_btn: "Télécharger PDF", res_title: "Tableau de Bord", total_exp: "Dépenses Totales", rem_amt: "Montant Restant", created_by: "Créé par", t_sug: "Conseils pour économiser :", w_crit: "Avertissement critique : Vos dépenses dépassent vos revenus ! Réduisez vos frais immédiatement.", w_food: "Budget alimentaire : Dépasse 30% de vos revenus. Essayez de planifier vos repas.", w_trans: "Budget transport : Élevé. Pensez aux abonnements mensuels de transport public.", succ: "Excellent : Votre budget est sain ! Pensez à investir le montant restant ou à l'épargner." },
+    ar: { title: "الميزانية الذكية", nav_invest: "الاستثمار", logout: "خروج", enter_data: "إدخال البيانات المالية", income: "الدخل الشهري (درهم):", rent: "السكن والفواتير (درهم):", food: "مصاريف التغذية (درهم):", transport: "مصاريف التنقل (درهم):", calc_btn: "احسب الميزانية", pdf_btn: "تحميل التقرير", res_title: "لوحة التحكم والنتائج", total_exp: "إجمالي المصاريف", rem_amt: "المبلغ المتبقي", created_by: "تم الإنشاء بواسطة", t_sug: "نصائح ذكية للتوفير:", w_crit: "تحذير خطير: مصاريفك تتجاوز دخلك! يجب خفض النفقات فوراً.", w_food: "ميزانية التغذية: تستهلك أكثر من 30% من دخلك. جرب تخطيط الوجبات أسبوعياً.", w_trans: "ميزانية التنقل: مرتفعة نسبياً. فكر في الاشتراكات الشهرية لوسائل النقل العمومي.", succ: "ممتاز: توزيعك المالي صحي! حاول استثمار المبلغ المتبقي أو وضعه في حساب التوفير." }
 };
 
 let currentLang = localStorage.getItem('appLang') || 'en';
@@ -190,10 +211,9 @@ window.onload = function() {
 
 function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
-    document.getElementById('themeIcon').innerText = theme === 'dark' ? '☀️' : '🌙';
+    document.getElementById('themeIcon').innerHTML = theme === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
     localStorage.setItem('appTheme', theme);
     currentTheme = theme;
-    // Re-draw chart to adapt text colors
     if(document.getElementById('income').value) calculateBudget();
 }
 
@@ -258,60 +278,32 @@ function updateChart(rent, food, transport, balance) {
         },
         options: {
             responsive: true, maintainAspectRatio: false,
-            plugins: { legend: { position: 'right', labels: { color: textColor } } }
+            plugins: { legend: { position: 'right', labels: { color: textColor, font: { size: 14 } } } }
         }
     });
 }
 
-// العودة إلى النصائح الكلاسيكية (بدون إنترنت وبدون API) مع دعم اللغات
 function generateSuggestions(income, totalExpenses, food, transport) {
     const area = document.getElementById('suggestionsArea');
+    const d = dict[currentLang];
     let hasSuggestions = false;
-    let html = '';
+    let html = `<h3 style="margin-bottom:15px; color: var(--primary); display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-lightbulb"></i> <span>${d.t_sug}</span></h3>`;
 
-    // 1. عنوان النصائح حسب اللغة المختارة
-    const title = currentLang === 'ar' ? '💡 نصائح ذكية للتوفير:' : 
-                  currentLang === 'fr' ? '💡 Conseils pour économiser :' : 
-                  '💡 Smart Saving Tips:';
-    
-    html += `<h3 style="margin-bottom:15px; color: var(--primary);">${title}</h3>`;
-
-    // 2. تحذير الخطر: المصاريف تتجاوز الدخل
     if (totalExpenses > income) {
-        const msg = currentLang === 'ar' ? '⚠️ <strong>تحذير خطير:</strong> مصاريفك تتجاوز دخلك! يجب خفض النفقات فوراً.' :
-                    currentLang === 'fr' ? '⚠️ <strong>Avertissement critique :</strong> Vos dépenses dépassent vos revenus ! Réduisez vos frais immédiatement.' :
-                    '⚠️ <strong>Critical warning:</strong> Your expenses exceed your income! Reduce spending immediately.';
-        html += `<div class="alert alert-danger">${msg}</div>`;
+        html += `<div class="alert alert-danger"><i class="fa-solid fa-triangle-exclamation" style="color:var(--danger);"></i> <div><strong>!</strong> ${d.w_crit}</div></div>`;
         hasSuggestions = true;
     }
-
-    // 3. قاعدة التغذية (أكثر من 30%)
     if (food > (income * 0.30)) {
-        const msg = currentLang === 'ar' ? '🍲 <strong>ميزانية التغذية:</strong> تستهلك أكثر من 30% من دخلك. جرب تخطيط الوجبات أسبوعياً.' :
-                    currentLang === 'fr' ? '🍲 <strong>Budget alimentaire :</strong> Dépasse 30% de vos revenus. Essayez de planifier vos repas.' :
-                    '🍲 <strong>Food budget:</strong> Exceeds 30% of your income. Try weekly meal planning.';
-        html += `<div class="alert alert-warning">${msg}</div>`;
+        html += `<div class="alert alert-warning"><i class="fa-solid fa-utensils" style="color:var(--warning);"></i> <div>${d.w_food}</div></div>`;
         hasSuggestions = true;
     }
-
-    // 4. قاعدة التنقل (أكثر من 10%)
     if (transport > (income * 0.10)) {
-        const msg = currentLang === 'ar' ? '🚌 <strong>ميزانية التنقل:</strong> مرتفعة نسبياً. فكر في الاشتراكات الشهرية لوسائل النقل العمومي.' :
-                    currentLang === 'fr' ? '🚌 <strong>Budget transport :</strong> Élevé. Pensez aux abonnements mensuels de transport public.' :
-                    '🚌 <strong>Transport budget:</strong> High. Consider monthly public transit subscriptions.';
-        html += `<div class="alert alert-warning">${msg}</div>`;
+        html += `<div class="alert alert-warning"><i class="fa-solid fa-bus" style="color:var(--warning);"></i> <div>${d.w_trans}</div></div>`;
         hasSuggestions = true;
     }
-
-    // 5. وضع مالي صحي (رسالة نجاح)
     if (!hasSuggestions && totalExpenses <= income) {
-        const msg = currentLang === 'ar' ? '✅ <strong>ممتاز:</strong> توزيعك المالي صحي! حاول استثمار المبلغ المتبقي أو وضعه في حساب التوفير.' :
-                    currentLang === 'fr' ? '✅ <strong>Excellent :</strong> Votre budget est sain ! Pensez à investir le montant restant ou à l\'épargner.' :
-                    '✅ <strong>Excellent:</strong> Healthy budget! Consider investing your remaining balance or saving it.';
-        html += `<div class="alert alert-success">${msg}</div>`;
+        html += `<div class="alert alert-success"><i class="fa-solid fa-circle-check" style="color:var(--success);"></i> <div>${d.succ}</div></div>`;
     }
-
-    // 6. عرض النتائج في الشاشة
     area.innerHTML = html;
 }
 

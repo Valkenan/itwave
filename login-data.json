@@ -1,0 +1,10 @@
+{
+  "loginRecords": [
+    {
+      "email": "admin@itwave.com",
+      "role": "admin1234",
+      "status": "active",
+      "createdAt": "2026-04-16T00:00:00.000Z"
+    }
+  ]
+}

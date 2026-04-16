@@ -104,6 +104,7 @@
         </div>
 
         <button onclick="calculateBudget()">احسب الميزانية وقدم النصائح</button>
+        <button type="button" onclick="goToLogin()">الرجوع إلى صفحة تسجيل الدخول</button>
 
         <div id="resultsArea" class="results">
             <h3>نتائج الميزانية:</h3>
@@ -193,6 +194,10 @@
                 document.getElementById('food').value = userData.food || '';
                 document.getElementById('transport').value = userData.transport || '';
             }
+        }
+
+        function goToLogin() {
+            window.location.href = './home.html';
         }
     </script>
 </body>

@@ -244,17 +244,38 @@ function changeLang(lang) {
 // --- AUTH LOGIC ---
 function encryptPassword(password) { return btoa(unescape(encodeURIComponent(password))); }
 
+function isPasswordMatch(storedPassword, inputPassword) {
+    if (typeof storedPassword !== "string") return false;
+    const encryptedInput = encryptPassword(inputPassword);
+    return storedPassword === encryptedInput || storedPassword === inputPassword;
+}
+
+function normalizeUserPasswords(users) {
+    return users.map(user => {
+        if (!user || typeof user.password !== "string") return user;
+        try {
+            const alreadyEncoded = btoa(atob(user.password)) === user.password;
+            return alreadyEncoded ? user : { ...user, password: encryptPassword(user.password) };
+        } catch (e) {
+            return { ...user, password: encryptPassword(user.password) };
+        }
+    });
+}
+
 async function initDB() {
     if (!localStorage.getItem(DB_KEY) || localStorage.getItem("db_version") !== "v3") {
         try {
             const response = await fetch('./login-data.json');
             const data = await response.json();
-            const secureRecords = data.loginRecords.map(user => ({
-                ...user, password: encryptPassword(user.password)
-            }));
+            const secureRecords = normalizeUserPasswords(data.loginRecords || []);
             localStorage.setItem(DB_KEY, JSON.stringify(secureRecords));
             localStorage.setItem("db_version", "v3"); 
         } catch (error) { localStorage.setItem(DB_KEY, JSON.stringify([])); }
+    } else {
+        // Keep old/local records compatible by upgrading any plaintext passwords.
+        const usersDB = JSON.parse(localStorage.getItem(DB_KEY) || "[]");
+        const normalizedUsers = normalizeUserPasswords(usersDB);
+        localStorage.setItem(DB_KEY, JSON.stringify(normalizedUsers));
     }
 }
 
@@ -290,8 +311,15 @@ function handleAuth() {
         let encryptedInput = encryptPassword(password);
 
         if (isLoginMode) {
-            const user = usersDB.find(u => u.email === email && u.password === encryptedInput);
+            const user = usersDB.find(u => u.email === email && isPasswordMatch(u.password, password));
             if (!user) throw new Error(d.err_cred);
+
+            // If matched a legacy plaintext value, upgrade it immediately.
+            if (user.password === password) {
+                user.password = encryptedInput;
+                localStorage.setItem(DB_KEY, JSON.stringify(usersDB));
+            }
+
             completeLogin(user, msg, d.success);
         } else {
             let username = document.getElementById("username").value.trim();

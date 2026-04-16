@@ -307,21 +307,41 @@ function saveLoginRecord(email) {
     localStorage.setItem(LOGIN_STORAGE_KEY, JSON.stringify(records));
 }
 
-function login() {
+async function login() {
     let email = document.getElementById("email").value.trim();
     let code = document.getElementById("code").value;
     let check = document.getElementById("check").checked;
     let msg = document.getElementById("msg");
 
     try {
+        // 1. Validate Input Formats
         validateLoginInput(email, code, check);
+        
+        // 2. Simulate Backend Authentication Call
+        const response = await fetch('./login-data.json');
+        if (!response.ok) throw new Error("Could not connect to authentication server.");
+        const data = await response.json();
+        
+        // 3. Verify User Credentials (using 'role' from your JSON as a mocked password for now)
+        const user = data.loginRecords.find(u => u.email === email && u.role === code);
+        
+        if (!user) {
+            throw new Error("Invalid email or password!");
+        }
+
+        if (user.status !== "active") {
+            throw new Error("This account is inactive.");
+        }
+
+        // 4. Create Session & Log
+        localStorage.setItem("currentUser", email); // Save session state
         saveLoginRecord(email);
 
         msg.className = "message success";
         msg.innerHTML = "Login success...";
 
         setTimeout(() => {
-            window.location.href = "./pagelogin";
+            window.location.href = "./pagelogin.html"; 
         }, 1200);
     } catch (error) {
         msg.className = "message error";

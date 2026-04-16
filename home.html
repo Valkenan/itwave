@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animated Login</title>
+
+<style>
+:root {
+    --bg-1: #072a3a;
+    --bg-2: #0a4f5e;
+    --bg-3: #f2ba5a;
+    --card: rgba(248, 250, 252, 0.9);
+    --card-border: rgba(255, 255, 255, 0.5);
+    --text: #132533;
+    --muted: #5e6d7b;
+    --accent: #0f766e;
+    --accent-hover: #115e59;
+    --danger: #c2410c;
+    --success: #166534;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 22px;
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at 12% 20%, rgba(242, 186, 90, 0.45), transparent 42%),
+        radial-gradient(circle at 82% 88%, rgba(10, 79, 94, 0.62), transparent 45%),
+        linear-gradient(130deg, var(--bg-1), var(--bg-2));
+    overflow: hidden;
+}
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    width: 38vmax;
+    height: 38vmax;
+    border-radius: 50%;
+    filter: blur(22px);
+    z-index: 0;
+    animation: floatOrb 9s ease-in-out infinite;
+}
+
+body::before {
+    top: -14vmax;
+    left: -10vmax;
+    background: rgba(242, 186, 90, 0.22);
+}
+
+body::after {
+    bottom: -18vmax;
+    right: -12vmax;
+    background: rgba(255, 255, 255, 0.14);
+    animation-delay: 1.6s;
+}
+
+@keyframes floatOrb {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-12px) scale(1.05); }
+}
+
+.card {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 420px);
+    border-radius: 20px;
+    border: 1px solid var(--card-border);
+    background: var(--card);
+    backdrop-filter: blur(14px);
+    padding: 28px;
+    box-shadow: 0 24px 45px rgba(0, 0, 0, 0.2);
+    animation: riseIn 500ms ease-out;
+}
+
+@keyframes riseIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 8px;
+    font-size: clamp(1.7rem, 2vw, 2rem);
+    letter-spacing: 0.2px;
+}
+
+.subtitle {
+    text-align: center;
+    color: var(--muted);
+    margin-bottom: 22px;
+    font-size: 0.95rem;
+}
+
+.field {
+    margin-bottom: 14px;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.input-wrap {
+    position: relative;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    border: 1px solid #c7d3de;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 12px;
+    padding: 12px 88px 12px 12px;
+    font-size: 0.96rem;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.18);
+    background: #ffffff;
+}
+
+.eye {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    min-width: 64px;
+    height: 34px;
+    padding: 0 10px;
+    border-radius: 10px;
+    border: 1px solid #c7d3de;
+    background: #ffffff;
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.eye:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(15, 118, 110, 0.08);
+}
+
+.eye:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.18);
+}
+
+.agree {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.92rem;
+    color: var(--muted);
+    margin: 6px 0 16px;
+}
+
+.agree input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent);
+}
+
+.login-btn {
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    color: #fff;
+    background: linear-gradient(135deg, var(--accent), #0ea5a0);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.login-btn:hover {
+    background: linear-gradient(135deg, var(--accent-hover), var(--accent));
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(15, 118, 110, 0.32);
+}
+
+.message {
+    margin: 0 0 10px;
+    text-align: center;
+    font-size: 0.93rem;
+    min-height: 22px;
+}
+
+.error {
+    color: var(--danger);
+}
+
+.success {
+    color: var(--success);
+}
+
+@media (max-width: 480px) {
+    .card {
+        padding: 22px 18px;
+        border-radius: 16px;
+    }
+
+    .subtitle {
+        margin-bottom: 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h1 class="title">Welcome Back</h1>
+    <p class="subtitle">Sign in to continue to your workspace.</p>
+
+    <div class="field">
+        <label for="email">Email</label>
+        <div class="input-wrap">
+            <input type="email" id="email" placeholder="name@example.com" autocomplete="email">
+        </div>
+    </div>
+
+    <div class="field">
+        <label for="code">Code</label>
+        <div class="input-wrap">
+            <input type="password" id="code" placeholder="Enter your code" autocomplete="current-password">
+            <button id="toggleCodeBtn" class="eye" type="button" onclick="togglePassword()" aria-label="Show code" aria-pressed="false" title="Show code">Show</button>
+        </div>
+    </div>
+
+    <label class="agree" for="check">
+        <input type="checkbox" id="check" name="check">
+        <span>I accept the conditions</span>
+    </label>
+
+    <div id="msg" class="message error"></div>
+
+    <button class="login-btn" type="button" onclick="login()">Login</button>
+</div>
+
+<script>
+function togglePassword() {
+    let input = document.getElementById("code");
+    let button = document.getElementById("toggleCodeBtn");
+    let isHidden = input.type === "password";
+
+    input.type = isHidden ? "text" : "password";
+    button.textContent = isHidden ? "Hide" : "Show";
+    button.setAttribute("aria-label", isHidden ? "Hide code" : "Show code");
+    button.setAttribute("title", isHidden ? "Hide code" : "Show code");
+    button.setAttribute("aria-pressed", isHidden ? "true" : "false");
+}
+
+function login() {
+    let email = document.getElementById("email").value;
+    let code = document.getElementById("code").value;
+    let check = document.getElementById("check").checked;
+    let msg = document.getElementById("msg");
+
+    msg.className = "message error";
+
+    if (email === "" || code === "") {
+        msg.innerHTML = "Fill all fields!";
+        return;
+    }
+
+    if (!check) {
+        msg.innerHTML = "Accept conditions!";
+        return;
+    }
+
+    // animation success
+    msg.className = "message success";
+    msg.innerHTML = "Login success...";
+
+    setTimeout(() => {
+        window.location.href = "pagelogin";
+    }, 1200);
+}
+
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        login();
+    }
+});
+</script>
+
+</body>
+</html>

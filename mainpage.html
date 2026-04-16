@@ -1,221 +1,408 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مدير الميزانية الذكي - الهاكاثون</title>
+    <title>Smart Budget Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* إعدادات التصميم الأساسية - CSS */
+        :root {
+            --primary: #0f766e;
+            --primary-hover: #115e59;
+            --bg-color: #f4f7fa;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+            --info: #3b82f6;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
+            background-color: var(--bg-color);
             margin: 0;
             padding: 20px;
-            color: #333;
+            color: var(--text-dark);
         }
-        .container {
-            max-width: 600px;
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto 20px auto;
+            background: var(--card-bg);
+            padding: 15px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .user-info {
+            font-weight: bold;
+            color: var(--text-muted);
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 1000px;
             margin: 0 auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-        h1 {
-            text-align: center;
-            color: #2c3e50;
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
         }
+
+        .card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 10px;
+            color: var(--text-dark);
+            font-size: 1.2rem;
+        }
+
         .form-group {
             margin-bottom: 15px;
         }
+
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
         }
+
         input[type="number"] {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            /* لمنع خروج الحقل عن الإطار */
-        }
-        button {
-            width: 100%;
             padding: 12px;
-            background-color: #3498db;
-            color: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
             border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #2980b9;
-        }
-        .results {
-            margin-top: 20px;
-            padding: 20px;
-            background-color: #e8f6f3;
-            border-radius: 5px;
-            display: none; /* مخفي افتراضياً حتى يتم الحساب */
-        }
-        .alert {
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 1rem;
             font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
         }
-        .alert-warning {
-            background-color: #fcf3cf;
-            color: #b7950b;
-            border-left: 5px solid #f1c40f;
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
         }
-        .alert-danger {
-            background-color: #fadbd8;
-            color: #b03a2e;
-            border-left: 5px solid #e74c3c;
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: var(--text-dark);
+        }
+
+        .btn-secondary:hover {
+            background-color: #cbd5e1;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: var(--bg-color);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-box.danger .amount { color: var(--danger); }
+        .stat-box.success .amount { color: var(--success); }
+
+        .stat-box h3 {
+            margin: 0 0 5px 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .stat-box .amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .alert {
+            padding: 12px 15px;
+            margin-top: 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .alert-danger { background-color: #fef2f2; color: #991b1b; border-right: 4px solid var(--danger); }
+        .alert-warning { background-color: #fffbeb; color: #92400e; border-right: 4px solid var(--warning); }
+        .alert-success { background-color: #ecfdf5; color: #065f46; border-right: 4px solid var(--success); }
+
+        /* Print Styles for exporting report */
+        @media print {
+            body { background: white; }
+            .btn, .header button { display: none; }
+            .dashboard-container { grid-template-columns: 1fr; }
+            .card { box-shadow: none; border: 1px solid #ccc; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>📊 مدير الميزانية الذكي</h1>
-        <p style="text-align: center;">أدخل بياناتك لمعرفة وضعك المالي والحصول على نصائح للتوفير.</p>
-
-        <div class="form-group">
-            <label for="income">الدخل الشهري (بالدرهم):</label>
-            <input type="number" id="income" placeholder="مثال: 5000">
-        </div>
+<div class="header">
+    <h1>📊 Smart Budget Dashboard</h1>
+    <div>
+        <button class="btn btn-primary" style="width: auto; padding: 8px 15px; margin-left: 10px; background: #0284c7;" onclick="window.location.href='investment.html'">💎 Investment Opportunities</button>
         
-        <div class="form-group">
-            <label for="rent">السكن والفواتير (كراء، ماء، كهرباء):</label>
-            <input type="number" id="rent" placeholder="مثال: 1500">
-        </div>
-        <div class="form-group">
-            <label for="food">مصاريف التغذية (القفة):</label>
-            <input type="number" id="food" placeholder="مثال: 1500">
-        </div>
-        <div class="form-group">
- 
-            <label for="transport">مصاريف التنقل:</label>
-            <input type="number" id="transport" placeholder="مثال: 500">
-        </div>
+        <span class="user-info" id="userDisplay">Welcome</span>
+        <button class="btn btn-secondary" style="width: auto; padding: 8px 15px; margin-left: 15px;" onclick="goToLogin()">Logout</button>
+    </div>
+</div>
 
-        <button onclick="calculateBudget()">احسب الميزانية وقدم النصائح</button>
-        <button type="button" onclick="goToLogin()">الرجوع إلى صفحة تسجيل الدخول / تسجيل الخروج</button>
-
-        <div id="resultsArea" class="results">
-            <h3>نتائج الميزانية:</h3>
-            <p><strong>إجمالي المصاريف:</strong> 
-            <span id="totalExpenses">0</span> درهم</p>
-            <p><strong>المبلغ المتبقي:</strong> <span id="balance">0</span> درهم</p>
+    <div class="dashboard-container">
+        <div class="card">
+            <h2>📝 Enter Financial Data</h2>
             
-            <div id="suggestionsArea"></div>
+            <div class="form-group">
+                <label for="income">Monthly Income (MAD):</label>
+                <input type="number" id="income" placeholder="Example: 5000">
+            </div>
+            
+            <div class="form-group">
+                <label for="rent">Housing and Bills (Rent, Water, Electricity):</label>
+                <input type="number" id="rent" placeholder="Example: 1500">
+            </div>
+            
+            <div class="form-group">
+                <label for="food">Food Expenses:</label>
+                <input type="number" id="food" placeholder="Example: 1500">
+            </div>
+            
+            <div class="form-group">
+                <label for="transport">Transport Expenses:</label>
+                <input type="number" id="transport" placeholder="Example: 500">
+            </div>
+
+            <button class="btn btn-primary" onclick="calculateBudget()">Calculate Budget</button>
+            <button class="btn btn-secondary" onclick="window.print()">📥 Download Report (PDF)</button>
+        </div>
+
+        <div class="card" id="resultsCard" style="display: none;">
+            <h2>📈 Dashboard and Results</h2>
+            
+            <div class="results-grid">
+                <div class="stat-box danger">
+                    <h3>Total Expenses</h3>
+                    <p class="amount"><span id="totalExpenses">0</span> MAD</p>
+                </div>
+                <div class="stat-box success">
+                    <h3>Remaining Amount (Savings)</h3>
+                    <p class="amount"><span id="balance">0</span> MAD</p>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="budgetChart"></canvas>
+            </div>
+
+            <div id="suggestionsArea" style="margin-top: 20px;"></div>
         </div>
     </div>
 
     <script>
-        // دالة يتم تشغيلها عند تحميل الصفحة لجلب البيانات السابقة إن وجدت
+        let budgetChartInstance = null;
+
+        // Initialize Page
         window.onload = function() {
+            const currentUserData = localStorage.getItem("currentUser");
+            if (!currentUserData) {
+                window.location.href = './home.html';
+                return;
+            }
+            
+            try {
+                const user = JSON.parse(currentUserData);
+                document.getElementById('userDisplay').innerText = `Welcome, ${user.username} (${user.email})`;
+            } catch (e) {
+                // Fallback for old string format
+                document.getElementById('userDisplay').innerText = `Welcome, ${currentUserData.split('@')[0]}`;
+            }
+            
             loadSavedData();
         };
 
+        function getCurrentUserEmail() {
+            const currentUserData = localStorage.getItem("currentUser");
+            if (!currentUserData) return null;
+
+            try {
+                const user = JSON.parse(currentUserData);
+                return user.email || null;
+            } catch (e) {
+                return currentUserData;
+            }
+        }
+
         function calculateBudget() {
-            // 1. جلب القيم المدخلة
             const income = parseFloat(document.getElementById('income').value) || 0;
             const rent = parseFloat(document.getElementById('rent').value) || 0;
             const food = parseFloat(document.getElementById('food').value) || 0;
             const transport = parseFloat(document.getElementById('transport').value) || 0;
             
-            if (income === 0) {
-                alert("يرجى إدخال الدخل الشهري أولاً!");
+            if (income <= 0) {
+                alert("Please enter a valid monthly income!");
                 return;
             }
 
-            // 2. العمليات الحسابية
             const totalExpenses = rent + food + transport;
             const balance = income - totalExpenses;
 
-            // 3. عرض النتائج
+            // Display Results
             document.getElementById('totalExpenses').innerText = totalExpenses;
             document.getElementById('balance').innerText = balance;
-            document.getElementById('resultsArea').style.display = 'block';
+            document.getElementById('resultsCard').style.display = 'block';
 
-            // 4. توليد النصائح الذكية (Smart Suggestions)
+            // Generate Chart & Suggestions
+            updateChart(rent, food, transport, balance);
             generateSuggestions(income, totalExpenses, food, transport);
-            
-            // 5. حفظ البيانات في المتصفح (LocalStorage)
             saveData(income, rent, food, transport);
+        }
+
+        // --- NEW: Chart.js Integration ---
+        function updateChart(rent, food, transport, balance) {
+            const ctx = document.getElementById('budgetChart').getContext('2d');
+            
+            // Destroy previous chart if it exists so it can redraw smoothly
+            if (budgetChartInstance) {
+                budgetChartInstance.destroy();
+            }
+
+            // Ensure balance doesn't break the chart if it's negative
+            const displayBalance = balance > 0 ? balance : 0;
+
+            budgetChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Housing and Bills', 'Food', 'Transport', 'Savings (Remaining)'],
+                    datasets: [{
+                        data: [rent, food, transport, displayBalance],
+                        backgroundColor: [
+                            '#ef4444', // Red for rent
+                            '#f59e0b', // Yellow for food
+                            '#3b82f6', // Blue for transport
+                            '#10b981'  // Green for savings
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right' }
+                    }
+                }
+            });
         }
 
         function generateSuggestions(income, totalExpenses, food, transport) {
             const suggestionsArea = document.getElementById('suggestionsArea');
-            suggestionsArea.innerHTML = '<h3>💡 نصائح ذكية للتوفير:</h3>'; // إعادة تعيين النصائح
+            suggestionsArea.innerHTML = '<h3 style="margin-bottom:10px;">💡 Smart Suggestions:</h3>'; 
 
             let hasSuggestions = false;
             
-            // تحذير إذا كانت المصاريف تتجاوز الدخل أو قريبة منه
             if (totalExpenses > income) {
-                suggestionsArea.innerHTML += `<div class="alert alert-danger">⚠️ تحذير: مصاريفك الحالية تتجاوز دخلك!
-                يجب مراجعة نفقاتك بشكل عاجل.</div>`;
+                suggestionsArea.innerHTML += `<div class="alert alert-danger">⚠️ <strong>Critical warning:</strong> Your expenses exceed your income. You are in an unstable financial situation and should reduce spending immediately.</div>`;
                 hasSuggestions = true;
             }
 
-            // نصيحة بخصوص التغذية (إذا تجاوزت 30% من الدخل)
             if (food > (income * 0.30)) {
-                suggestionsArea.innerHTML += `<div class="alert alert-warning">🍲 مصاريف التغذية تبدو مرتفعة قليلاً.
-                <strong>نصيحة:</strong> يمكنك تعويض اللحوم الحمراء بالقطاني (العدس/اللوبيا) مرتين في الأسبوع، مما سيوفر لك مئات الدراهم شهرياً.</div>`;
+                suggestionsArea.innerHTML += `<div class="alert alert-warning">🍲 <strong>Food budget:</strong> It uses more than 30% of your income. Try weekly meal planning and reduce eating out.</div>`;
                 hasSuggestions = true;
             }
 
-            // نصيحة بخصوص التنقل (إذا تجاوز 10% من الدخل)
             if (transport > (income * 0.10)) {
-                suggestionsArea.innerHTML += `<div class="alert alert-warning">🚌 مصاريف التنقل تأخذ جزءاً كبيراً من ميزانيتك.
-                <strong>نصيحة:</strong> هل فكرت في الاشتراك الشهري للحافلات أو الترامواي بدلاً من سيارات الأجرة اليومية؟</div>`;
+                suggestionsArea.innerHTML += `<div class="alert alert-warning">🚌 <strong>Transport budget:</strong> It is relatively high. Consider using monthly public transport subscriptions.</div>`;
                 hasSuggestions = true;
             }
 
-            if (!hasSuggestions && totalExpenses < income) {
-                suggestionsArea.innerHTML += `<div class="alert" style="background-color: #d5f5e3; color: #1d8348; border-left: 5px solid #2ecc71;">✅ ممتاز!
-                مصاريفك في حدود المعقول. حاول تخصيص 20% من المبلغ المتبقي للادخار أو لحالات الطوارئ.</div>`;
+            if (!hasSuggestions && totalExpenses <= income) {
+                suggestionsArea.innerHTML += `<div class="alert alert-success">✅ <strong>Excellent:</strong> Your financial distribution is healthy. Try transferring the remaining amount directly to savings as soon as you get paid (pay yourself first rule).</div>`;
             }
         }
 
-        // دالة لحفظ البيانات (محدثة لربط البيانات بالمستخدم الحالي)
         function saveData(income, rent, food, transport) {
-            const currentUser = localStorage.getItem("currentUser");
-            if (!currentUser) return; // Prevent saving if not logged in
+            const userEmail = getCurrentUserEmail();
+            if (!userEmail) return;
 
             const userData = { income, rent, food, transport };
-            localStorage.setItem(`budgetData_${currentUser}`, JSON.stringify(userData));
+            localStorage.setItem(`budgetData_${userEmail}`, JSON.stringify(userData));
         }
 
-        // دالة لاسترجاع البيانات المحفوظة (محدثة للتحقق من الجلسة)
         function loadSavedData() {
-            const currentUser = localStorage.getItem("currentUser");
-            if (!currentUser) {
-                // Enforce authentication: Redirect to login if accessed directly
-                window.location.href = './home.html';
-                return;
-            }
+            const userEmail = getCurrentUserEmail();
+            if (!userEmail) return;
 
-            const savedData = localStorage.getItem(`budgetData_${currentUser}`);
+            const savedData = localStorage.getItem(`budgetData_${userEmail}`);
             if (savedData) {
                 const userData = JSON.parse(savedData);
                 document.getElementById('income').value = userData.income || '';
                 document.getElementById('rent').value = userData.rent || '';
                 document.getElementById('food').value = userData.food || '';
                 document.getElementById('transport').value = userData.transport || '';
+                
+                // Automatically calculate if data exists
+                if(userData.income) calculateBudget();
             }
         }
 
         function goToLogin() {
-            localStorage.removeItem("currentUser"); // Clear active session on logout
+            localStorage.removeItem("currentUser");
             window.location.href = './home.html';
         }
     </script>

@@ -317,13 +317,13 @@ async function login() {
         // 1. Validate Input Formats
         validateLoginInput(email, code, check);
         
-        // 2. Simulate Backend Authentication Call
+        // 2. Fetch Authentication Data
         const response = await fetch('./login-data.json');
         if (!response.ok) throw new Error("Could not connect to authentication server.");
         const data = await response.json();
         
-        // 3. Verify User Credentials (using 'role' from your JSON as a mocked password for now)
-        const user = data.loginRecords.find(u => u.email === email && u.role === code);
+        // 3. Verify User Credentials (check both email and password)
+        const user = data.loginRecords.find(u => u.email === email && u.password === code);
         
         if (!user) {
             throw new Error("Invalid email or password!");
@@ -333,8 +333,8 @@ async function login() {
             throw new Error("This account is inactive.");
         }
 
-        // 4. Create Session & Log
-        localStorage.setItem("currentUser", email); // Save session state
+        // 4. Create Session with Full User Data
+        localStorage.setItem("currentUser", JSON.stringify(user));
         saveLoginRecord(email);
 
         msg.className = "message success";

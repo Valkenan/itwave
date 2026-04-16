@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Budget Dashboard</title>
+    <title>Smart Budget | It-Force</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -16,167 +16,143 @@
             --danger: #ef4444;
             --warning: #f59e0b;
             --success: #10b981;
-            --info: #3b82f6;
+            --border-color: #cbd5e1;
+        }
+
+        [data-theme="dark"] {
+            --primary: #0d9488;
+            --primary-hover: #0f766e;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-dark: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 20px;
-            color: var(--text-dark);
+            background-color: var(--bg-color); margin: 0; padding: 20px;
+            color: var(--text-dark); transition: all 0.3s;
         }
 
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1000px;
-            margin: 0 auto 20px auto;
-            background: var(--card-bg);
-            padding: 15px 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex; justify-content: space-between; align-items: center;
+            max-width: 1000px; margin: 0 auto 20px auto;
+            background: var(--card-bg); padding: 15px 30px;
+            border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
         }
 
-        .header h1 {
-            margin: 0;
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
+        .header h1 { margin: 0; font-size: 1.5rem; color: var(--primary); }
+        .controls-group { display: flex; align-items: center; gap: 15px; }
 
-        .user-info {
-            font-weight: bold;
-            color: var(--text-muted);
-        }
-
-        .dashboard-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        @media (max-width: 768px) {
-            .dashboard-container { grid-template-columns: 1fr; }
-            .header { flex-direction: column; gap: 15px; text-align: center; }
-        }
+        .dashboard-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1000px; margin: 0 auto; }
+        @media (max-width: 768px) { .dashboard-container { grid-template-columns: 1fr; } .header { flex-direction: column; gap: 15px; text-align: center; } }
 
         .card {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            background: var(--card-bg); padding: 25px; border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); transition: all 0.3s;
         }
 
-        .card h2 {
-            margin-top: 0;
-            border-bottom: 2px solid var(--bg-color);
-            padding-bottom: 10px;
-            color: var(--text-dark);
-            font-size: 1.2rem;
-        }
-
+        .card h2 { margin-top: 0; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; font-size: 1.2rem; }
         .form-group { margin-bottom: 15px; }
-
         label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; }
 
-        input[type="number"] {
-            width: 100%; padding: 12px; border: 1px solid #cbd5e1;
-            border-radius: 8px; box-sizing: border-box; transition: border-color 0.2s;
+        input[type="number"], select {
+            width: 100%; padding: 12px; border: 1px solid var(--border-color);
+            background: var(--bg-color); color: var(--text-dark);
+            border-radius: 8px; box-sizing: border-box; transition: 0.3s;
         }
-
-        input[type="number"]:focus {
-            outline: none; border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
-        }
+        input:focus, select:focus { outline: none; border-color: var(--primary); }
 
         .btn {
-            width: 100%; padding: 14px; border: none; border-radius: 8px;
-            font-size: 1rem; font-weight: bold; cursor: pointer;
-            transition: all 0.2s; margin-top: 10px;
+            width: 100%; padding: 12px; border: none; border-radius: 8px;
+            font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 10px;
         }
-
         .btn-primary { background-color: var(--primary); color: white; }
         .btn-primary:hover { background-color: var(--primary-hover); }
-
-        .btn-secondary { background-color: #e2e8f0; color: var(--text-dark); }
-        .btn-secondary:hover { background-color: #cbd5e1; }
+        .btn-secondary { background-color: var(--border-color); color: var(--text-dark); }
 
         .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .stat-box { background: var(--bg-color); padding: 15px; border-radius: 8px; text-align: center; }
+        .stat-box { background: var(--bg-color); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);}
         .stat-box.danger .amount { color: var(--danger); }
         .stat-box.success .amount { color: var(--success); }
         .stat-box h3 { margin: 0 0 5px 0; font-size: 0.9rem; color: var(--text-muted); }
         .stat-box .amount { font-size: 1.5rem; font-weight: bold; margin: 0; }
 
         .chart-container { position: relative; height: 250px; width: 100%; margin-top: 20px; }
+        
+        .alert { padding: 12px 15px; margin-top: 15px; border-radius: 8px; font-size: 0.9rem; line-height: 1.5; background: var(--bg-color); border: 1px solid var(--border-color); }
+        
+        footer { text-align: center; margin-top: 40px; padding-bottom: 20px; color: var(--text-muted); font-weight: bold; }
 
-        .alert { padding: 12px 15px; margin-top: 15px; border-radius: 8px; font-size: 0.9rem; line-height: 1.5; }
-        .alert-danger { background-color: #fef2f2; color: #991b1b; border-right: 4px solid var(--danger); }
-        .alert-warning { background-color: #fffbeb; color: #92400e; border-right: 4px solid var(--warning); }
-        .alert-success { background-color: #ecfdf5; color: #065f46; border-right: 4px solid var(--success); }
+        .theme-btn { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 50%; width: 35px; height: 35px; cursor: pointer; }
 
+        /* 🖨️ Fix for Printing in Dark Mode */
         @media print {
-            body { background: white; }
-            .btn, .header button { display: none; }
-            .dashboard-container { grid-template-columns: 1fr; }
-            .card { box-shadow: none; border: 1px solid #ccc; }
+            body, .card, .header, .stat-box, .alert { 
+                background: white !important; color: black !important; 
+                box-shadow: none !important; border: 1px solid #ccc !important; 
+            }
+            h1, h2, h3, p, span, div { color: black !important; }
+            .btn, .controls-group, .theme-btn { display: none !important; }
+            .dashboard-container { display: block; }
+            .card { margin-bottom: 20px; page-break-inside: avoid; }
         }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h1>📊 Smart Budget Dashboard</h1>
-    <div>
-        <button class="btn btn-primary" style="width: auto; padding: 8px 15px; margin-right: 10px; background: #0284c7;" onclick="window.location.href='investisement.html'">💎 Investment</button>
-        
-        <span class="user-info" id="userDisplay">Welcome</span>
-        <button class="btn btn-secondary" style="width: auto; padding: 8px 15px; margin-left: 10px;" onclick="goToLogin()">Logout</button>
+    <h1 data-i18n="title">📊 Smart Budget</h1>
+    <div class="controls-group">
+        <select id="langSelect" onchange="changeLang(this.value)">
+            <option value="en">EN</option>
+            <option value="fr">FR</option>
+            <option value="ar">AR</option>
+        </select>
+        <button class="theme-btn" onclick="toggleTheme()" id="themeIcon">🌙</button>
+        <button class="btn btn-primary" style="width: auto; padding: 8px 15px; margin: 0;" onclick="window.location.href='investisement.html'" data-i18n="nav_invest">💎 Investment</button>
+        <button class="btn btn-secondary" style="width: auto; padding: 8px 15px; margin: 0;" onclick="goToLogin()" data-i18n="logout">Logout</button>
     </div>
 </div>
 
 <div class="dashboard-container">
     <div class="card">
-        <h2>📝 Enter Financial Data</h2>
+        <h2 data-i18n="enter_data">📝 Enter Financial Data</h2>
         
         <div class="form-group">
-            <label for="income">Monthly Income (MAD):</label>
-            <input type="number" id="income" placeholder="Example: 5000">
+            <label for="income" data-i18n="income">Monthly Income (MAD):</label>
+            <input type="number" id="income">
         </div>
-        
         <div class="form-group">
-            <label for="rent">Housing and Bills (Rent, Water, Electricity):</label>
-            <input type="number" id="rent" placeholder="Example: 1500">
+            <label for="rent" data-i18n="rent">Housing and Bills:</label>
+            <input type="number" id="rent">
         </div>
-        
         <div class="form-group">
-            <label for="food">Food Expenses:</label>
-            <input type="number" id="food" placeholder="Example: 1500">
+            <label for="food" data-i18n="food">Food Expenses:</label>
+            <input type="number" id="food">
         </div>
-        
         <div class="form-group">
-            <label for="transport">Transport Expenses:</label>
-            <input type="number" id="transport" placeholder="Example: 500">
+            <label for="transport" data-i18n="transport">Transport Expenses:</label>
+            <input type="number" id="transport">
         </div>
 
-        <button class="btn btn-primary" onclick="calculateBudget()">Calculate Budget</button>
-        <button class="btn btn-secondary" onclick="window.print()">📥 Download Report (PDF)</button>
+        <button class="btn btn-primary" onclick="calculateBudget()" data-i18n="calc_btn">Calculate Budget</button>
+        <button class="btn btn-secondary" onclick="window.print()" data-i18n="pdf_btn">📥 Download Report</button>
     </div>
 
     <div class="card" id="resultsCard" style="display: none;">
-        <h2>📈 Dashboard and Results</h2>
+        <h2 data-i18n="res_title">📈 Dashboard and Results</h2>
         
         <div class="results-grid">
             <div class="stat-box danger">
-                <h3>Total Expenses</h3>
-                <p class="amount"><span id="totalExpenses">0</span> MAD</p>
+                <h3 data-i18n="total_exp">Total Expenses</h3>
+                <p class="amount"><span id="totalExpenses">0</span></p>
             </div>
             <div class="stat-box success">
-                <h3>Remaining Amount</h3>
-                <p class="amount"><span id="balance">0</span> MAD</p>
+                <h3 data-i18n="rem_amt">Remaining Amount</h3>
+                <p class="amount"><span id="balance">0</span></p>
             </div>
         </div>
 
@@ -188,130 +164,175 @@
     </div>
 </div>
 
+<footer>
+    <span data-i18n="created_by">Created by</span> It-Force © 2026
+</footer>
+
 <script>
-    let budgetChartInstance = null;
+// --- DICTIONARY ---
+const dict = {
+    en: { title: "📊 Smart Budget", nav_invest: "💎 Investment", logout: "Logout", enter_data: "📝 Enter Financial Data", income: "Monthly Income (MAD):", rent: "Housing and Bills (MAD):", food: "Food Expenses (MAD):", transport: "Transport Expenses (MAD):", calc_btn: "Calculate Budget", pdf_btn: "📥 Download Report", res_title: "📈 Dashboard and Results", total_exp: "Total Expenses", rem_amt: "Remaining Amount", ai_load: "✨ AI is analyzing your data...", created_by: "Created by" },
+    fr: { title: "📊 Budget Intelligent", nav_invest: "💎 Investissement", logout: "Déconnexion", enter_data: "📝 Entrez vos données", income: "Revenu Mensuel (MAD):", rent: "Logement et Factures (MAD):", food: "Dépenses Alimentaires (MAD):", transport: "Dépenses de Transport (MAD):", calc_btn: "Calculer le Budget", pdf_btn: "📥 Télécharger PDF", res_title: "📈 Tableau de Bord", total_exp: "Dépenses Totales", rem_amt: "Montant Restant", ai_load: "✨ L'IA analyse vos données...", created_by: "Créé par" },
+    ar: { title: "📊 الميزانية الذكية", nav_invest: "💎 الاستثمار", logout: "خروج", enter_data: "📝 إدخال البيانات", income: "الدخل الشهري (درهم):", rent: "السكن والفواتير (درهم):", food: "مصاريف التغذية (درهم):", transport: "مصاريف التنقل (درهم):", calc_btn: "احسب الميزانية", pdf_btn: "📥 تحميل التقرير", res_title: "📈 لوحة التحكم والنتائج", total_exp: "إجمالي المصاريف", rem_amt: "المبلغ المتبقي", ai_load: "✨ الذكاء الاصطناعي يحلل بياناتك...", created_by: "تم الإنشاء بواسطة" }
+};
 
-    window.onload = function() {
-        const currentUserData = localStorage.getItem("currentUser");
-        if (!currentUserData) {
-            window.location.href = './home.html';
-            return;
-        }
-        
-        try {
-            const user = JSON.parse(currentUserData);
-            document.getElementById('userDisplay').innerText = `Hello, ${user.username || 'User'}`;
-        } catch (e) {
-            document.getElementById('userDisplay').innerText = `Hello!`;
-        }
-        
-        loadSavedData();
-    };
+let currentLang = localStorage.getItem('appLang') || 'en';
+let currentTheme = localStorage.getItem('appTheme') || 'light';
+let budgetChartInstance = null;
 
-    function getCurrentUserEmail() {
-        const currentUserData = localStorage.getItem("currentUser");
-        if (!currentUserData) return null;
-        try {
-            const user = JSON.parse(currentUserData);
-            return user.email || null;
-        } catch (e) {
-            return currentUserData;
+window.onload = function() {
+    if (!localStorage.getItem("currentUser")) { window.location.href = './home.html'; return; }
+    document.getElementById('langSelect').value = currentLang;
+    applyTheme(currentTheme);
+    changeLang(currentLang);
+    loadSavedData();
+};
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    document.getElementById('themeIcon').innerText = theme === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('appTheme', theme);
+    currentTheme = theme;
+    // Re-draw chart to adapt text colors
+    if(document.getElementById('income').value) calculateBudget();
+}
+
+function toggleTheme() { applyTheme(currentTheme === 'light' ? 'dark' : 'light'); }
+
+function changeLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('appLang', lang);
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if(dict[lang][key]) el.innerText = dict[lang][key];
+    });
+    if(document.getElementById('income').value) calculateBudget();
+}
+
+function getCurrentUserEmail() {
+    const data = localStorage.getItem("currentUser");
+    if (!data) return null;
+    try { return JSON.parse(data).email; } catch (e) { return data; }
+}
+
+function calculateBudget() {
+    const income = parseFloat(document.getElementById('income').value) || 0;
+    const rent = parseFloat(document.getElementById('rent').value) || 0;
+    const food = parseFloat(document.getElementById('food').value) || 0;
+    const transport = parseFloat(document.getElementById('transport').value) || 0;
+    if (income <= 0) return;
+
+    const totalExpenses = rent + food + transport;
+    const balance = income - totalExpenses;
+
+    document.getElementById('totalExpenses').innerText = totalExpenses + " MAD";
+    document.getElementById('balance').innerText = balance + " MAD";
+    document.getElementById('resultsCard').style.display = 'block';
+
+    updateChart(rent, food, transport, balance);
+    generateSuggestions(income, totalExpenses, food, transport);
+    saveData(income, rent, food, transport);
+}
+
+function updateChart(rent, food, transport, balance) {
+    const ctx = document.getElementById('budgetChart').getContext('2d');
+    if (budgetChartInstance) budgetChartInstance.destroy();
+    
+    const textColor = currentTheme === 'dark' ? '#f8fafc' : '#1e293b';
+    const labels = currentLang === 'ar' ? ['السكن', 'التغذية', 'التنقل', 'الادخار'] : 
+                   currentLang === 'fr' ? ['Logement', 'Nourriture', 'Transport', 'Épargne'] : 
+                   ['Housing', 'Food', 'Transport', 'Savings'];
+
+    budgetChartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: [rent, food, transport, balance > 0 ? balance : 0],
+                backgroundColor: ['#ef4444', '#f59e0b', '#3b82f6', '#10b981'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { position: 'right', labels: { color: textColor } } }
         }
+    });
+}
+
+// العودة إلى النصائح الكلاسيكية (بدون إنترنت وبدون API) مع دعم اللغات
+function generateSuggestions(income, totalExpenses, food, transport) {
+    const area = document.getElementById('suggestionsArea');
+    let hasSuggestions = false;
+    let html = '';
+
+    // 1. عنوان النصائح حسب اللغة المختارة
+    const title = currentLang === 'ar' ? '💡 نصائح ذكية للتوفير:' : 
+                  currentLang === 'fr' ? '💡 Conseils pour économiser :' : 
+                  '💡 Smart Saving Tips:';
+    
+    html += `<h3 style="margin-bottom:15px; color: var(--primary);">${title}</h3>`;
+
+    // 2. تحذير الخطر: المصاريف تتجاوز الدخل
+    if (totalExpenses > income) {
+        const msg = currentLang === 'ar' ? '⚠️ <strong>تحذير خطير:</strong> مصاريفك تتجاوز دخلك! يجب خفض النفقات فوراً.' :
+                    currentLang === 'fr' ? '⚠️ <strong>Avertissement critique :</strong> Vos dépenses dépassent vos revenus ! Réduisez vos frais immédiatement.' :
+                    '⚠️ <strong>Critical warning:</strong> Your expenses exceed your income! Reduce spending immediately.';
+        html += `<div class="alert alert-danger">${msg}</div>`;
+        hasSuggestions = true;
     }
 
-    function calculateBudget() {
-        const income = parseFloat(document.getElementById('income').value) || 0;
-        const rent = parseFloat(document.getElementById('rent').value) || 0;
-        const food = parseFloat(document.getElementById('food').value) || 0;
-        const transport = parseFloat(document.getElementById('transport').value) || 0;
-        
-        if (income <= 0) {
-            alert("Please enter a valid monthly income!");
-            return;
-        }
-
-        const totalExpenses = rent + food + transport;
-        const balance = income - totalExpenses;
-
-        document.getElementById('totalExpenses').innerText = totalExpenses;
-        document.getElementById('balance').innerText = balance;
-        document.getElementById('resultsCard').style.display = 'block';
-
-        updateChart(rent, food, transport, balance);
-        generateSuggestions(income, totalExpenses, food, transport);
-        saveData(income, rent, food, transport);
+    // 3. قاعدة التغذية (أكثر من 30%)
+    if (food > (income * 0.30)) {
+        const msg = currentLang === 'ar' ? '🍲 <strong>ميزانية التغذية:</strong> تستهلك أكثر من 30% من دخلك. جرب تخطيط الوجبات أسبوعياً.' :
+                    currentLang === 'fr' ? '🍲 <strong>Budget alimentaire :</strong> Dépasse 30% de vos revenus. Essayez de planifier vos repas.' :
+                    '🍲 <strong>Food budget:</strong> Exceeds 30% of your income. Try weekly meal planning.';
+        html += `<div class="alert alert-warning">${msg}</div>`;
+        hasSuggestions = true;
     }
 
-    function updateChart(rent, food, transport, balance) {
-        const ctx = document.getElementById('budgetChart').getContext('2d');
-        if (budgetChartInstance) budgetChartInstance.destroy();
-        const displayBalance = balance > 0 ? balance : 0;
-
-        budgetChartInstance = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Housing', 'Food', 'Transport', 'Savings'],
-                datasets: [{
-                    data: [rent, food, transport, displayBalance],
-                    backgroundColor: ['#ef4444', '#f59e0b', '#3b82f6', '#10b981'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { position: 'right' } }
-            }
-        });
+    // 4. قاعدة التنقل (أكثر من 10%)
+    if (transport > (income * 0.10)) {
+        const msg = currentLang === 'ar' ? '🚌 <strong>ميزانية التنقل:</strong> مرتفعة نسبياً. فكر في الاشتراكات الشهرية لوسائل النقل العمومي.' :
+                    currentLang === 'fr' ? '🚌 <strong>Budget transport :</strong> Élevé. Pensez aux abonnements mensuels de transport public.' :
+                    '🚌 <strong>Transport budget:</strong> High. Consider monthly public transit subscriptions.';
+        html += `<div class="alert alert-warning">${msg}</div>`;
+        hasSuggestions = true;
     }
 
-    function generateSuggestions(income, totalExpenses, food, transport) {
-        const suggestionsArea = document.getElementById('suggestionsArea');
-        suggestionsArea.innerHTML = '<h3 style="margin-bottom:10px;">💡 AI Suggestions:</h3>'; 
-        let hasSuggestions = false;
-        
-        if (totalExpenses > income) {
-            suggestionsArea.innerHTML += `<div class="alert alert-danger">⚠️ <strong>Critical warning:</strong> Your expenses exceed your income. Reduce spending immediately.</div>`;
-            hasSuggestions = true;
-        }
-        if (food > (income * 0.30)) {
-            suggestionsArea.innerHTML += `<div class="alert alert-warning">🍲 <strong>Food budget:</strong> Exceeds 30%. Try meal planning.</div>`;
-            hasSuggestions = true;
-        }
-        if (transport > (income * 0.10)) {
-            suggestionsArea.innerHTML += `<div class="alert alert-warning">🚌 <strong>Transport budget:</strong> High. Consider monthly subscriptions.</div>`;
-            hasSuggestions = true;
-        }
-        if (!hasSuggestions && totalExpenses <= income) {
-            suggestionsArea.innerHTML += `<div class="alert alert-success">✅ <strong>Excellent:</strong> Healthy budget! Invest the remaining balance.</div>`;
-        }
+    // 5. وضع مالي صحي (رسالة نجاح)
+    if (!hasSuggestions && totalExpenses <= income) {
+        const msg = currentLang === 'ar' ? '✅ <strong>ممتاز:</strong> توزيعك المالي صحي! حاول استثمار المبلغ المتبقي أو وضعه في حساب التوفير.' :
+                    currentLang === 'fr' ? '✅ <strong>Excellent :</strong> Votre budget est sain ! Pensez à investir le montant restant ou à l\'épargner.' :
+                    '✅ <strong>Excellent:</strong> Healthy budget! Consider investing your remaining balance or saving it.';
+        html += `<div class="alert alert-success">${msg}</div>`;
     }
 
-    function saveData(income, rent, food, transport) {
-        const userEmail = getCurrentUserEmail();
-        if (!userEmail) return;
-        const userData = { income, rent, food, transport };
-        localStorage.setItem(`budgetData_${userEmail}`, JSON.stringify(userData));
-    }
+    // 6. عرض النتائج في الشاشة
+    area.innerHTML = html;
+}
 
-    function loadSavedData() {
-        const userEmail = getCurrentUserEmail();
-        if (!userEmail) return;
-        const savedData = localStorage.getItem(`budgetData_${userEmail}`);
-        if (savedData) {
-            const userData = JSON.parse(savedData);
-            document.getElementById('income').value = userData.income || '';
-            document.getElementById('rent').value = userData.rent || '';
-            document.getElementById('food').value = userData.food || '';
-            document.getElementById('transport').value = userData.transport || '';
-            if(userData.income) calculateBudget();
-        }
-    }
+function saveData(i, r, f, t) {
+    const mail = getCurrentUserEmail();
+    if(mail) localStorage.setItem(`budget_${mail}`, JSON.stringify({i, r, f, t}));
+}
 
-    function goToLogin() {
-        localStorage.removeItem("currentUser");
-        window.location.href = './home.html';
+function loadSavedData() {
+    const mail = getCurrentUserEmail();
+    const data = JSON.parse(localStorage.getItem(`budget_${mail}`));
+    if (data) {
+        document.getElementById('income').value = data.i || '';
+        document.getElementById('rent').value = data.r || '';
+        document.getElementById('food').value = data.f || '';
+        document.getElementById('transport').value = data.t || '';
+        if(data.i) calculateBudget();
     }
+}
+
+function goToLogin() { localStorage.removeItem("currentUser"); window.location.href = './home.html'; }
 </script>
 </body>
 </html>
